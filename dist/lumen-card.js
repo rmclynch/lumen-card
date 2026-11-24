@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.5.1';
+const LUMEN_VERSION = '0.5.2';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -837,6 +837,19 @@ class LumenCard extends HTMLElement {
     const offX = best.padL + (stage.w - best.padL - best.padR - usedW) / 2 - best.x0 * sc;
     const offY = best.padT + (stage.h - best.padT - usedH) / 2 - best.y0 * sc;
     const place = (i) => ({ cx: offX + best.arr[i].x * sc, cy: offY + best.arr[i].y * sc, side: best.arr[i].side });
+    // one name size for the whole house: the largest size at which every room's longest word fits
+    const fitOf = (r, c) => {
+      const maxW = Math.max(40, Math.round(c.w / 100 * (W - 20) - 10));
+      const longest = Math.max(...String(r.name).split(/\s+/).map((w) => w.length), 1);
+      return Math.floor((maxW - 12) / (longest * 0.58));
+    };
+    // Two sizes at most: one for most rooms, and one smaller size shared by the few rooms too narrow for it.
+    const fits = [];
+    floors.forEach((f) => { const cs = this._cellsFor(f); f.rooms.forEach((r, k) => fits.push(fitOf(r, cs[k]))); });
+    const sorted = fits.slice().sort((a, b) => a - b);
+    const houseFs = Math.max(18, Math.min(tf, sorted[Math.floor(sorted.length * 0.2)] || tf));
+    const smallFs = Math.max(12, Math.min(houseFs, sorted[0] || houseFs));
+    const sizeFor = (r, c) => (fitOf(r, c) >= houseFs ? houseFs : smallFs);
     const plates = floors.map((f, i) => {
       const { cx, cy, side } = place(i);
       const cells = this._cellsFor(f);
@@ -848,11 +861,8 @@ class LumenCard extends HTMLElement {
         const v = 10 + (c.y + c.h / 2) / 100 * (H - 20) - H / 2;
         const [x, y] = proj(u, v);
         const maxW = Math.max(40, Math.round(c.w / 100 * (W - 20) - 10));
-        // shrink the name until its longest word fits across the room (never split a word)
-        const longest = Math.max(...String(r.name).split(/\s+/).map((w) => w.length), 1);
-        const fs = Math.max(12, Math.min(tf, Math.floor((maxW - 12) / (longest * 0.58))));
-        const name = tiny ? '' : `<span class="tn" style="max-width:${maxW}px;font-size:${fs}px">${esc(r.name)}</span>`;
-        const t = r.temp != null ? `<span class="tt">${esc(fmtT(r.temp))}</span>` : '';
+        const name = tiny ? '' : `<span class="tn" style="max-width:${Math.max(maxW, 60)}px;font-size:${sizeFor(r, c)}px">${esc(r.name)}</span>`;
+        const t = r.temp != null ? `<span class="tt" style="font-size:${houseFs}px">${esc(fmtT(r.temp))}</span>` : '';
         return name || t ? `<div class="tag" style="left:${Math.round(x)}px;top:${Math.round(y)}px" aria-hidden="true">${name}${t}</div>` : '';
       }).join('');
       let corner, off;
