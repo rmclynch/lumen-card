@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.5.2';
+const LUMEN_VERSION = '0.6.0';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -163,6 +163,120 @@ nav.rail *{animation:none !important}
 .ctlval{font-size:15px;color:#f4f1ff;text-transform:none;letter-spacing:0}
 .sw{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);padding:0;cursor:pointer}
 .sw.on{border:3px solid #ffffff;box-shadow:0 0 0 4px rgba(255,255,255,0.22)}
+/* rail counts */
+.kbtn{position:relative}
+.kcount{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#f4f1ff;color:#1b1d3f;font-family:var(--lumen-head);font-size:12px;font-weight:700;line-height:22px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.45)}
+nav.rail{padding-top:12px}
+/* favourite star */
+.pill.star svg{width:18px;height:18px}
+.pill.star.on{background:#ffd29a;color:#2a1a08;border-color:#ffd29a}
+.pill.star.on svg{fill:#2a1a08}
+.phead{flex-wrap:wrap}
+.phead .right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.phead .right .ptemp{margin-left:0}
+/* camera */
+.camwrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:22px;align-items:start}
+.camslot{position:relative;width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:#05060f;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center}
+.camimg{width:100%;height:100%;object-fit:contain;display:block;font-size:0;color:transparent}
+.camnote{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(5,6,15,0.82);font-size:15px;color:#e3def5;text-align:center;padding:16px;z-index:2}
+.camnote svg{width:34px;height:34px}
+.dpad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:6px;justify-content:center}
+.dpad button{border-radius:16px}
+.dpad .mid{border-radius:50%;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.2)}
+.ibtn{display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);color:#f4f1ff;cursor:pointer;padding:0}
+.ibtn:hover{background:rgba(255,255,255,0.18)}
+.ibtn:active{background:#f4f1ff;color:#1b1d3f}
+.ibtn svg{width:26px;height:26px}
+/* ---------- phone ---------- */
+.m-phone .top{left:12px;right:12px;top:12px}
+.m-phone .brand{padding:8px 16px;gap:10px}
+.m-phone .brand b{font-size:19px}
+.m-phone .brand span{font-size:12px}
+.m-phone .wx{padding:7px 14px;font-size:13px}
+.m-phone .wx .t{font-size:16px}
+.m-phone nav.rail{left:12px;right:12px;top:66px;bottom:auto;width:auto;flex-direction:row;gap:8px;padding:12px 8px 8px;border-radius:24px;overflow-x:auto;overflow-y:visible}
+.m-phone .kbtn{width:auto;min-height:44px;flex-direction:row;gap:8px;padding:0 14px 0 10px;border-radius:999px}
+.m-phone .kbtn .klbl{font-size:13px}
+.m-phone .kbtn .mroom{width:26px;height:18px}
+.m-phone .kbtn .badge{width:22px;height:22px}
+.m-phone .kcount{position:static;min-width:20px;height:20px;line-height:20px;font-size:11px;box-shadow:none}
+.m-phone .raildiv{width:1px;height:auto;margin:6px 2px}
+.m-phone .stagewrap{left:12px;right:12px;top:136px;bottom:84px}
+.m-phone .stagewrap.norail{top:66px}
+.m-phone .card{border-radius:24px;padding:14px 14px 10px}
+.m-phone .cardhead{flex-wrap:wrap;gap:6px}
+.m-phone .cardhead h1{font-size:21px}
+.m-phone .cardhead span{font-size:13px}
+.m-phone nav.lift{left:12px;right:12px;top:auto;bottom:14px;flex-direction:row;justify-content:center;gap:8px;padding:8px;border-radius:999px}
+.m-phone .lbtn{width:50px;height:50px}
+.flist{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-bottom:6px}
+.fsec{display:flex;flex-direction:column;gap:8px}
+.fhead{display:flex;align-items:center;gap:10px;min-height:44px;background:none;border:0;padding:0;color:#f4f1ff;font-family:var(--lumen-head);font-size:17px;font-weight:600;cursor:pointer;text-align:left}
+.fbadge{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:rgba(12,14,38,0.82);border:1px solid rgba(255,255,255,0.35);font-size:14px;font-weight:700;flex:none}
+.fsub{margin-left:auto;font-family:var(--lumen-font);font-size:13px;font-weight:500;color:#cfcae6}
+.m-phone .plan{width:100%;height:auto;max-width:none}
+.m-phone .planwrap{align-items:flex-start;overflow-y:auto}
+.m-phone .plan .room{padding:6px 8px;border-radius:12px;justify-content:space-between}
+.m-phone .plan .room{container-type:inline-size}
+.m-phone .plan .room .rn{font-size:13px;font-size:min(13px,calc((100cqw - 4px) / (var(--len,8) * 0.6)));line-height:1.15;overflow:hidden;max-width:100%}
+.m-phone .plan .room .sum{font-size:11px}
+.m-phone .plan .badges{top:5px;right:5px}
+.m-phone .plan .badge{width:18px;height:18px}
+.m-phone .plan .badge svg{width:11px;height:11px}
+.m-phone .shade{align-items:flex-end;padding:0}
+.m-phone .panel{width:100%;max-height:92%;border-radius:26px 26px 0 0;padding:18px 16px 24px;gap:14px}
+.m-phone .phead h2{font-size:22px}
+.m-phone .phead .ptemp{font-size:22px}
+.m-phone .climate,.m-phone .lightgrid,.m-phone .camwrap{grid-template-columns:minmax(0,1fr);gap:16px}
+.m-phone .dialbox{height:220px}
+.m-phone .dialbox svg{width:190px;height:190px}
+.m-phone .glowbox{height:170px}
+.m-phone .glowball{width:140px;height:140px}
+.m-phone .trow{display:flex;flex-direction:column;gap:8px}
+.m-phone .thead{flex-direction:row;flex-wrap:wrap;gap:12px}
+.m-phone .thead > span{display:none}
+.m-phone .dev{padding:6px 8px 6px 12px;flex-wrap:wrap}
+/* ---------- small square screens ---------- */
+.m-small .smwrap{position:absolute;inset:10px;display:flex;flex-direction:column;gap:10px;z-index:2}
+.smtop{display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 8px 6px 6px;border-radius:22px;background:rgba(12,14,38,0.72)}
+.smtop h1{margin:0;font-family:var(--lumen-head);font-size:22px;font-weight:600;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.smtop .smt{font-family:var(--lumen-head);font-size:20px;color:#ffd29a}
+.smtop .smsub{font-size:13px;color:#cfcae6;white-space:nowrap}
+.smbtn{flex:none;min-width:48px;height:48px;border-radius:16px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);color:#f4f1ff;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 10px;font-family:var(--lumen-font);font-size:14px;font-weight:600;cursor:pointer}
+.smbtn svg{width:22px;height:22px}
+.smbtn.on{background:#ffd29a;color:#2a1a08;border-color:#ffd29a}
+.smbtn.on svg{fill:#2a1a08}
+.smgrid{flex:1 1 auto;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(96px,auto);gap:10px;align-content:start}
+.smgrid.one{grid-template-columns:minmax(0,1fr);grid-auto-rows:minmax(72px,auto)}
+.tile{position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,0.25);background:rgba(20,22,52,0.72);color:#f4f1ff;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:6px;text-align:left;font-family:var(--lumen-font);cursor:pointer;min-width:0}
+.tile.static{cursor:default}
+.tile.on{background:rgba(255,196,120,0.4);border-color:#ffc47a;box-shadow:0 0 22px rgba(255,180,100,0.55)}
+.tile.alert{outline:3px solid #ff5a5a;outline-offset:-3px;animation:lumenPulse 1.4s ease-in-out infinite}
+.tile > *{position:relative;z-index:1}
+.tile .heat,.tile .cool{height:55%}
+.tile .tn{font-size:17px;font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.tile .ts{font-size:13px;font-weight:500;color:#e3def5}
+.tile.on .ts{color:#2a1a08}.tile.on .tn{color:#2a1a08}
+.tile .tic{width:30px;height:30px;border-radius:999px;background:rgba(8,10,28,0.6);display:flex;align-items:center;justify-content:center;color:#f4f1ff}
+.tile .tic svg{width:17px;height:17px}
+.more{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(8,10,28,0.55);color:#f4f1ff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;padding:0}
+.more svg{width:20px;height:20px}
+.tile.big{flex-direction:row;align-items:center;justify-content:flex-start;gap:14px}
+.tile.big .fbadge{width:44px;height:44px;font-size:18px}
+.tile.big .tn{font-family:var(--lumen-head);font-size:20px}
+.tile.big .ts{margin-left:auto}
+.m-small .shade{padding:0}
+.m-small .panel{width:100%;height:100%;max-height:none;border-radius:0;padding:14px;gap:12px}
+.m-small .phead h2{font-size:20px}
+.m-small .climate,.m-small .lightgrid{grid-template-columns:170px minmax(0,1fr);gap:14px}
+.m-small .camwrap{grid-template-columns:minmax(0,1fr);gap:12px}
+.m-small .dialbox{height:180px}
+.m-small .dialbox svg{width:164px;height:164px}
+.m-small .glowbox{height:160px}
+.m-small .glowball{width:120px;height:120px}
+.m-small .step{width:48px;height:48px;font-size:24px}
+.m-small .climate .ctl span[style*="font-size:34px"]{font-size:26px !important;min-width:80px !important}
+.m-small .phead .sub{font-size:12px}
 @keyframes lumenPulse{0%,100%{outline-color:rgba(255,90,90,1)}50%{outline-color:rgba(255,90,90,0.15)}}
 @keyframes lumenZoom{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes lumenSpin{to{transform:rotate(360deg)}}
@@ -193,7 +307,17 @@ const ICON = {
   fan: '<circle cx="12" cy="12" r="1.6"></circle><path d="M12 10.4C11 7 12 3.5 15 4s1.5 4.5-3 6.4z"></path><path d="M13.4 12.8c3.4 1 5.8 3.6 4 6s-4.6-.6-4-6z"></path><path d="M10.6 12.8c-2.4 2.6-6 3.4-6.8.6s3.6-3.6 6.8-.6z"></path>',
   alert: '<path d="M12 3l10 18H2z"></path><path d="M12 10v4"></path>',
   close: '<path d="M6 6l12 12"></path><path d="M18 6L6 18"></path>',
-  back: '<path d="M15 18l-6-6 6-6"></path>'
+  back: '<path d="M15 18l-6-6 6-6"></path>',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path>',
+  camera: '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.5"></circle>',
+  up: '<path d="M6 15l6-6 6 6"></path>',
+  down: '<path d="M6 9l6 6 6-6"></path>',
+  left: '<path d="M15 18l-6-6 6-6"></path>',
+  right: '<path d="M9 6l6 6-6 6"></path>',
+  plus: '<path d="M12 5v14"></path><path d="M5 12h14"></path>',
+  minus: '<path d="M5 12h14"></path>',
+  bulb: '<path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"></path><path d="M9 18h6"></path><path d="M10 21h4"></path>',
+  heat: '<path d="M12 3c2 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3-1-5 1-8z"></path>'
 };
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -210,6 +334,11 @@ class LumenCard extends HTMLElement {
     this._sig = '';
     this._onClick = this._onClick.bind(this);
     this.shadowRoot.addEventListener('click', this._onClick);
+    this._lastTouch = Date.now();
+    const touched = () => { this._lastTouch = Date.now(); };
+    this.shadowRoot.addEventListener('pointerdown', touched, true);
+    this.shadowRoot.addEventListener('keydown', touched, true);
+    this.shadowRoot.addEventListener('wheel', touched, { capture: true, passive: true });
     this.shadowRoot.addEventListener('pointerdown', (e) => this._onPointerDown(e));
     this.shadowRoot.addEventListener('pointermove', (e) => this._onPointerMove(e));
     this.shadowRoot.addEventListener('pointerup', () => this._onPointerUp());
@@ -245,6 +374,8 @@ class LumenCard extends HTMLElement {
 
   connectedCallback() {
     this._tick = setInterval(() => { this._sig = ''; this._render(); }, 60000);
+    // like a lift going home: after a few minutes without a touch, go back to this screen's own room
+    this._idle = setInterval(() => this._goHomeIfIdle(), 15000);
     this._onResize = () => this._render();
     window.addEventListener('resize', this._onResize);
     if (window.ResizeObserver) {
@@ -252,7 +383,7 @@ class LumenCard extends HTMLElement {
       this._ro = new ResizeObserver(() => {
         const st = this.shadowRoot && this.shadowRoot.querySelector('.stage');
         const key = st ? st.clientWidth + 'x' + st.clientHeight : 'none';
-        if (key === this._stageKey) return;
+        if (key === this._stageKey && this._mode() === this._modeNow) return;
         cancelAnimationFrame(this._roFrame);
         this._roFrame = requestAnimationFrame(() => this._render());
       });
@@ -262,6 +393,8 @@ class LumenCard extends HTMLElement {
   }
   disconnectedCallback() {
     clearInterval(this._tick);
+    clearInterval(this._idle);
+    this._stopCamera();
     window.removeEventListener('resize', this._onResize);
     if (this._ro) this._ro.disconnect();
   }
@@ -304,6 +437,61 @@ class LumenCard extends HTMLElement {
       }
       this.style.setProperty('--lumen-top', '0px');
     } catch (e) { /* Home Assistant changed its layout: leave things as they are */ }
+  }
+
+  /* ---------- screen size: full, phone or small ---------- */
+
+  _mode() {
+    const forced = this._config && this._config.mode;
+    if (['full', 'phone', 'small'].includes(forced)) return forced;
+    const r = this.getBoundingClientRect();
+    const w = r.width || window.innerWidth;
+    const root = this.shadowRoot && this.shadowRoot.querySelector('.root');
+    const h = (root && root.clientHeight) || r.height || window.innerHeight;
+    const ratio = w / Math.max(1, h);
+    if (w <= 620 && h <= 620 && ratio > 0.7 && ratio < 1.45) return 'small';
+    if (w < 720 || h < 460) return 'phone';
+    return 'full';
+  }
+
+  /* ---------- this screen's favourite room ---------- */
+
+  _favKey() { return 'lumen-fav:' + (window.location.pathname || ''); }
+
+  _getFav() {
+    let v = null;
+    try { v = window.localStorage.getItem(this._favKey()); } catch (e) { v = null; }
+    if (v === '') return null;
+    return v || (this._config && this._config.room) || null;
+  }
+
+  _setFav(id) {
+    try { window.localStorage.setItem(this._favKey(), id || ''); } catch (e) { /* private window: keep it for this visit */ }
+    this._favMem = id || '';
+  }
+
+  _fav() {
+    if (this._favMem !== undefined) return this._favMem || null;
+    return this._getFav();
+  }
+
+  _homeView(floors) {
+    const fav = this._modeNow !== 'phone' ? this._fav() : null;
+    const has = fav && (floors || this._model() || []).some((f) => f.rooms.some((r) => r.id === fav));
+    return { floor: null, room: has ? fav : null, entity: null, kinds: [] };
+  }
+
+  _goHomeIfIdle() {
+    const mins = this._config && this._config.return_after != null ? num(this._config.return_after) : 5;
+    if (!mins || !this._hass || this._edit || this._drag || this._sliding) return;
+    if (Date.now() - this._lastTouch < mins * 60000) return;
+    const home = this._homeView();
+    const v = this._view;
+    const same = (v.floor || null) === home.floor && (v.room || null) === home.room && (v.entity || null) === null && !(v.kinds || []).length;
+    if (same) return;
+    this._view = home;
+    this._sig = '';
+    this._render();
   }
 
   /* ---------- reading Home Assistant ---------- */
@@ -550,6 +738,9 @@ class LumenCard extends HTMLElement {
     const wx = this._weather();
     const now = new Date();
     const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const mode = this._mode();
+    this._modeNow = mode;
+    if (!this._booted && floors.length) { this._booted = true; this._view = this._homeView(floors); }
     const v = this._view;
     if (v.floor && !floors.some((f) => f.id === v.floor)) v.floor = null;
 
@@ -570,19 +761,21 @@ class LumenCard extends HTMLElement {
       body = this._tableHtml(floors, floor);
     } else if (floor) {
       body = this._floorHtml(floor, onCount);
+    } else if (mode === 'phone') {
+      body = this._phoneHouseHtml(floors, onCount);
     } else {
       body = this._houseHtml(floors, onCount);
     }
 
     const lift = floors.length ? `<nav class="lift glass" aria-label="Floors">
       <button class="lbtn ${!floor ? 'active' : ''}" data-act="floor" data-id="" aria-label="Whole house" aria-pressed="${!floor}">${svg('house')}</button>
-      ${floors.slice().reverse().map((f) => `<button class="lbtn ${floor && floor.id === f.id ? 'active' : ''}" data-act="floor" data-id="${esc(f.id)}" aria-label="${esc(f.name)}" aria-pressed="${!!(floor && floor.id === f.id)}">${esc(f.short)}</button>`).join('')}
+      ${(mode === 'phone' ? floors : floors.slice().reverse()).map((f) => `<button class="lbtn ${floor && floor.id === f.id ? 'active' : ''}" data-act="floor" data-id="${esc(f.id)}" aria-label="${esc(f.name)}" aria-pressed="${!!(floor && floor.id === f.id)}">${esc(f.short)}</button>`).join('')}
     </nav>` : '';
 
     const panelKey = room ? room.id + '/' + (v.entity || '') : '';
     this._opening = !!panelKey && panelKey !== this._lastPanelKey;
     this._lastPanelKey = panelKey;
-    const panel = room ? this._panelHtml(room) : '';
+    const panel = room && (mode !== 'small' || v.entity) ? this._panelHtml(room) : '';
 
     const scroll = this.shadowRoot.querySelector('.panel') ? this.shadowRoot.querySelector('.panel').scrollTop : 0;
     // the sky lives in a shell that is built once, so weather effects keep running smoothly
@@ -594,19 +787,23 @@ class LumenCard extends HTMLElement {
       shell = this.shadowRoot.querySelector('.root[data-shell]');
     }
     shell.style.background = sky.bg;
-    shell.className = 'root ' + mood.cls;
+    shell.className = 'root ' + mood.cls + ' m-' + mode;
     shell.querySelector('.sun').style.background = sky.sun;
     const fxs = shell.querySelector('.fxs');
     if (fxs.dataset.key !== mood.key) { fxs.dataset.key = mood.key; fxs.innerHTML = mood.html; }
-    shell.querySelector('.ui').innerHTML = `
+    const rail = floors.length && mode !== 'small' ? this._railHtml(floors) : '';
+    shell.querySelector('.ui').innerHTML = mode === 'small'
+      ? `<div class="smwrap">${this._smallHtml(floors, wx)}</div>${panel}`
+      : `
         <div class="top">
-          <div class="brand glass"><b>Lumen</b><span>${esc(time)} · ${esc(sky.name)} · ${esc(mood.season)}</span></div>
+          <div class="brand glass"><b>Lumen</b><span>${esc(time)} · ${esc(sky.name)}${mode === 'phone' ? '' : ' · ' + esc(mood.season)}</span></div>
           ${wxHtml}
         </div>
-        ${floors.length ? this._railHtml(floors) : ''}
-        <div class="stagewrap">${body}</div>
+        ${rail}
+        <div class="stagewrap ${rail ? '' : 'norail'}">${body}</div>
         ${lift}
         ${panel}`;
+    this._attachCamera();
     const p = this.shadowRoot.querySelector('.panel');
     if (p && scroll) p.scrollTop = scroll;
     // the stacked view sizes itself from the stage, so redraw once the stage has a real size
@@ -616,6 +813,21 @@ class LumenCard extends HTMLElement {
       if (this._ro) this._ro.observe(st);
       if (key !== this._stageKey) { this._stageKey = key; requestAnimationFrame(() => this._render()); }
     }
+  }
+
+  // is this device doing something right now? (used for the rail counts)
+  _isOn(id) {
+    const s = this._hass.states[id];
+    if (!s) return false;
+    const dom = id.split('.')[0];
+    if (dom === 'climate') {
+      const a = s.attributes.hvac_action;
+      if (a) return ['heating', 'cooling', 'drying', 'fan'].includes(a);
+      return ['heat', 'cool', 'heat_cool', 'auto', 'dry', 'fan_only'].includes(s.state);
+    }
+    if (dom === 'media_player') return ['playing', 'on', 'paused', 'buffering'].includes(s.state);
+    if (dom === 'alarm_control_panel') return s.state === 'triggered';
+    return s.state === 'on';
   }
 
   _kindOf(id) {
@@ -638,6 +850,8 @@ class LumenCard extends HTMLElement {
     const present = {};
     floors.forEach((f) => f.rooms.forEach((r) => r.devs.forEach((id) => { present[this._kindOf(id)] = true; })));
     const sel = this._view.kinds || [];
+    const counts = {};
+    floors.forEach((f) => f.rooms.forEach((r) => r.devs.forEach((id) => { if (this._isOn(id)) { const k = this._kindOf(id); counts[k] = (counts[k] || 0) + 1; } })));
     const icon = (k) => ({
       light: '<span class="mroom lit"></span>',
       heat: '<span class="mroom"><span class="heat"></span></span>',
@@ -648,8 +862,8 @@ class LumenCard extends HTMLElement {
       plug: `<span class="badge">${svg('plug')}</span>`,
       alert: `<span class="mroom alert">${svg('alert')}</span>`
     }[k]);
-    const btns = KINDS.filter(([k]) => present[k]).map(([k, label]) => `<button class="kbtn ${sel.includes(k) ? 'active' : ''}" data-act="kind" data-id="${k}" aria-pressed="${sel.includes(k)}" aria-label="Show all ${label.toLowerCase()}">
-        <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;height:28px">${icon(k)}</span><span class="klbl">${label}</span></button>`).join('');
+    const btns = KINDS.filter(([k]) => present[k]).map(([k, label]) => `<button class="kbtn ${sel.includes(k) ? 'active' : ''}" data-act="kind" data-id="${k}" aria-pressed="${sel.includes(k)}" aria-label="Show all ${label.toLowerCase()}${counts[k] ? ', ' + counts[k] + ' on' : ''}">
+        <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;height:28px">${icon(k)}</span><span class="klbl">${label}</span>${counts[k] ? `<span class="kcount" aria-hidden="true">${counts[k]}</span>` : ''}</button>`).join('');
     if (!btns) return '';
     const clear = (sel.length || this._view.floor) ? `<span class="raildiv" aria-hidden="true"></span><button class="kbtn" data-act="clear" aria-label="Clear and go back to the whole house"><span aria-hidden="true" style="display:flex;height:28px;align-items:center">${svg('close', 'width="20" height="20"')}</span><span class="klbl">Clear</span></button>` : '';
     return `<nav class="rail glass" aria-label="Device types">${btns}${clear}</nav>`;
@@ -768,11 +982,86 @@ class LumenCard extends HTMLElement {
 
   _roomBtn(r, cell, plan) {
     const aria = `${r.name}${r.temp != null ? ', ' + fmtT(r.temp) : ''}, ${this._summary(r)}`;
-    return `<button class="${this._roomCls(r)}" style="left:${cell.x}%;top:${cell.y}%;width:${cell.w}%;height:${cell.h}%" data-act="room" data-id="${esc(r.id)}" aria-label="${esc(aria)}">
+    const len = Math.max(...String(r.name).split(/\s+/).map((w) => w.length), 1);
+    return `<button class="${this._roomCls(r)}" style="left:${cell.x}%;top:${cell.y}%;width:${cell.w}%;height:${cell.h}%;--len:${len}" data-act="room" data-id="${esc(r.id)}" aria-label="${esc(aria)}">
       ${r.kinds.heat ? '<span class="heat" aria-hidden="true"></span>' : ''}${r.kinds.cool ? '<span class="cool" aria-hidden="true"></span>' : ''}
       ${this._badges(r, plan ? 3 : 2)}
-      ${plan ? `<span class="rn">${esc(r.name)}</span><span class="sum">${r.temp != null ? esc(fmtT(r.temp)) + ' · ' : ''}${esc(this._summary(r))}</span>` : ''}
+      ${plan ? `<span class="rn">${esc(r.name)}</span><span class="sum">${this._modeNow === 'phone' ? (r.temp != null ? esc(fmtT(r.temp)) : '') : (r.temp != null ? esc(fmtT(r.temp)) + ' · ' : '') + esc(this._summary(r))}</span>` : ''}
     </button>`;
+  }
+
+  /* ---------- phone: floors as a list of flat plans, top floor first ---------- */
+
+  _phoneHouseHtml(floors, onCount) {
+    const secs = floors.slice().reverse().map((f) => {
+      const on = f.rooms.filter((r) => Object.keys(r.kinds).some((k) => k !== 'alert')).length;
+      const cells = this._cellsFor(f);
+      return `<section class="fsec">
+        <button class="fhead" data-act="floor" data-id="${esc(f.id)}" aria-label="Open ${esc(f.name)}"><span class="fbadge" aria-hidden="true">${esc(f.short)}</span>${esc(f.name)}<span class="fsub">${on ? on + ' on' : 'all quiet'}</span></button>
+        <div class="plan">${f.rooms.map((r, k) => this._roomBtn(r, cells[k], true)).join('')}</div>
+      </section>`;
+    }).join('');
+    return `<div class="card">
+      <div class="cardhead"><h1>Whole house</h1><span>${onCount} ${onCount === 1 ? 'room' : 'rooms'} with something on</span></div>
+      <div class="flist">${secs}</div>
+    </div>`;
+  }
+
+  /* ---------- small square screens: one thing at a time, big buttons ---------- */
+
+  _smallHtml(floors, wx) {
+    const v = this._view;
+    let room = null, roomFloor = null;
+    floors.forEach((f) => f.rooms.forEach((r) => { if (r.id === v.room) { room = r; roomFloor = f; } }));
+    const floor = v.floor ? floors.find((f) => f.id === v.floor) : null;
+    const up = (label) => `<button class="smbtn" data-act="sm-up" aria-label="Back to ${esc(label)}">${svg('back')}<span>${esc(label)}</span></button>`;
+    const lit = (r) => Object.keys(r.kinds).some((k) => k !== 'alert');
+    if (room) {
+      this._panelRoomName = room.name;
+      const tiles = room.devs.map((id) => this._tileHtml(id)).join('');
+      return `<div class="smtop">${up(roomFloor && floors.length > 1 ? roomFloor.name : 'House')}<h1>${esc(room.name)}</h1>${room.temp != null ? `<span class="smt">${esc(fmtT(room.temp))}</span>` : ''}${this._starBtn(room, true)}</div>
+        <div class="smgrid">${tiles || '<p class="empty" style="grid-column:1/-1">No devices in this room yet.</p>'}</div>`;
+    }
+    if (floor) {
+      const tiles = floor.rooms.map((r) => `<button class="tile ${r.kinds.light ? 'on' : ''} ${r.kinds.alert ? 'alert' : ''}" data-act="room" data-id="${esc(r.id)}" aria-label="${esc(r.name + (r.temp != null ? ', ' + fmtT(r.temp) : '') + ', ' + this._summary(r))}">
+          ${r.kinds.heat ? '<span class="heat" aria-hidden="true"></span>' : ''}${r.kinds.cool ? '<span class="cool" aria-hidden="true"></span>' : ''}
+          <span class="tn">${esc(r.name)}</span><span class="ts">${r.temp != null ? esc(fmtT(r.temp)) + ' · ' : ''}${esc(this._summary(r))}</span></button>`).join('');
+      return `<div class="smtop">${up('House')}<h1>${esc(floor.name)}</h1></div><div class="smgrid">${tiles}</div>`;
+    }
+    if (floors.length === 1) { this._view.floor = floors[0].id; return this._smallHtml(floors, wx); }
+    const tiles = floors.slice().reverse().map((f) => {
+      const on = f.rooms.filter(lit).length;
+      return `<button class="tile big ${on ? 'on' : ''}" data-act="floor" data-id="${esc(f.id)}"><span class="fbadge" aria-hidden="true">${esc(f.short)}</span><span class="tn">${esc(f.name)}</span><span class="ts">${on ? on + ' on' : 'all quiet'}</span></button>`;
+    }).join('');
+    const fav = this._fav();
+    const favRoom = fav && floors.reduce((a, f) => a || f.rooms.find((r) => r.id === fav), null);
+    return `<div class="smtop" style="padding-left:16px"><h1>Lumen</h1>${wx && wx.attributes.temperature != null ? `<span class="smsub">${esc(WX_NAMES[wx.state] || wx.state)}</span><span class="smt">${esc(Math.round(wx.attributes.temperature))}°</span>` : ''}${favRoom ? `<button class="smbtn on" data-act="room" data-id="${esc(favRoom.id)}" aria-label="Back to ${esc(favRoom.name)}">${svg('star')}</button>` : ''}</div>
+      <div class="smgrid one">${tiles}</div>`;
+  }
+
+  // one device as a big tile: tap to switch it, or to open its controls
+  _tileHtml(id) {
+    const s = this._hass.states[id];
+    if (!s) return '';
+    const dom = id.split('.')[0];
+    const dead = ['unavailable', 'unknown'].includes(s.state);
+    const on = this._isOn(id);
+    const icon = { light: 'bulb', climate: 'heat', camera: 'camera', media_player: 'media', fan: 'fan', switch: 'plug', binary_sensor: 'door', alarm_control_panel: 'alert' }[dom] || 'plug';
+    const opens = dom === 'climate' || dom === 'camera';
+    const toggles = ['light', 'switch', 'fan'].includes(dom) && !dead;
+    const more = dom === 'light' && !dead && this._lightCaps(s).dim;
+    const heatTint = dom === 'climate' && on ? (s.attributes.hvac_action === 'cooling' || s.state === 'cool' ? '<span class="cool" aria-hidden="true"></span>' : '<span class="heat" aria-hidden="true"></span>') : '';
+    const lit = (dom === 'light' || dom === 'switch' || dom === 'fan') && on;
+    const alert = (dom === 'alarm_control_panel' || (dom === 'binary_sensor' && !['door', 'window', 'opening', 'garage_door'].includes(s.attributes.device_class))) && on;
+    const act = toggles ? `data-act="toggle" aria-pressed="${on}"` : opens ? 'data-act="entity"' : '';
+    const tag = act ? 'button' : 'div';
+    return `<div style="position:relative;display:flex;min-width:0">
+      <${tag} class="tile ${lit ? 'on' : ''} ${alert ? 'alert' : ''} ${act ? '' : 'static'}" style="flex:1 1 auto" ${act} data-id="${esc(id)}" aria-label="${esc(this._name(id) + ', ' + this._stateText(id))}">
+        ${heatTint}<span class="tic" aria-hidden="true">${svg(icon)}</span>
+        <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span class="tn">${esc(this._name(id))}</span><span class="ts">${esc(this._stateText(id))}</span></span>
+      </${tag}>
+      ${more ? `<button class="more" data-act="entity" data-id="${esc(id)}" aria-label="Brightness and colour for ${esc(this._name(id))}">${svg('right')}</button>` : ''}
+    </div>`;
   }
 
   _houseHtml(floors, onCount) {
@@ -889,7 +1178,7 @@ class LumenCard extends HTMLElement {
   _floorHtml(floor, onCount) {
     const cells = this._cellsFor(floor);
     const editing = this._edit && this._edit.floor === floor.id;
-    const canEdit = !!(this._hass.user && this._hass.user.is_admin);
+    const canEdit = !!(this._hass.user && this._hass.user.is_admin) && this._modeNow === 'full';
     const head = editing
       ? `<div class="headbtns">
           ${this._edit.msg ? `<span class="savemsg" role="status">${esc(this._edit.msg)}</span>` : ''}
@@ -1064,16 +1353,17 @@ class LumenCard extends HTMLElement {
     const ent = this._view.entity;
     if (ent && this._hass.states[ent] && ent.startsWith('climate.')) return this._climateHtml(room, ent);
     if (ent && this._hass.states[ent] && ent.startsWith('light.')) return this._lightHtml(room, ent);
+    if (ent && this._hass.states[ent] && ent.startsWith('camera.')) return this._cameraHtml(room, ent);
     const rows = room.devs.map((id) => {
       const dom = id.split('.')[0];
       const s = this._hass.states[id];
       const canToggle = ['light', 'switch', 'fan'].includes(dom) && s && !['unavailable', 'unknown'].includes(s.state);
-      const isClimate = dom === 'climate' || (dom === 'light' && s && !['unavailable', 'unknown'].includes(s.state) && this._lightCaps(s).dim);
+      const isClimate = dom === 'climate' || dom === 'camera' || (dom === 'light' && s && !['unavailable', 'unknown'].includes(s.state) && this._lightCaps(s).dim);
       return `<div class="dev">
         <button class="dopen ${isClimate ? 'go' : ''}" ${isClimate ? `data-act="entity" data-id="${esc(id)}" aria-label="Open controls for ${esc(this._name(id))}"` : 'tabindex="-1"'}>
           <span class="nm">${esc(this._name(id))}</span><span class="sm">${esc(this._stateText(id))}</span>
         </button>
-        ${isClimate ? `<button class="pill" data-act="entity" data-id="${esc(id)}">Controls</button>` : ''}
+        ${isClimate ? `<button class="pill" data-act="entity" data-id="${esc(id)}">${dom === 'camera' ? svg('camera', 'width="16" height="16"') + 'View' : 'Controls'}</button>` : ''}
         ${canToggle ? `<button class="pill ${s.state === 'on' ? 'warm' : ''}" data-act="toggle" data-id="${esc(id)}" aria-pressed="${s.state === 'on'}">${s.state === 'on' ? 'On' : 'Off'}</button>` : ''}
       </div>`;
     }).join('');
@@ -1081,10 +1371,123 @@ class LumenCard extends HTMLElement {
       <div class="phead">
         <button class="pill" data-act="close" aria-label="Close">${svg('close', 'width="16" height="16"')}<span>Close</span></button>
         <h2>${esc(room.name)}</h2>
-        ${room.temp != null ? `<span class="ptemp">${esc(fmtT(room.temp))}</span>` : ''}
+        <div class="right">
+          ${room.temp != null ? `<span class="ptemp">${esc(fmtT(room.temp))}</span>` : ''}
+          ${this._starBtn(room)}
+        </div>
       </div>
       ${rows ? `<div class="devs">${rows}</div>` : '<p class="empty">No devices in this room yet. Give a device this area in Home Assistant and it will appear here.</p>'}
     </div></div>`;
+  }
+
+  _starBtn(room, small) {
+    if (this._modeNow === 'phone') return '';
+    const on = this._fav() === room.id;
+    const label = on ? 'This screen opens on ' + room.name + '. Tap to stop.' : 'Make ' + room.name + ' this screen’s room';
+    if (small) return `<button class="smbtn ${on ? 'on' : ''}" data-act="fav" data-id="${esc(room.id)}" aria-pressed="${on}" aria-label="${esc(label)}">${svg('star')}</button>`;
+    return `<button class="pill star ${on ? 'on' : ''}" data-act="fav" data-id="${esc(room.id)}" aria-pressed="${on}" aria-label="${esc(label)}">${svg('star')}<span>${on ? 'This screen’s room' : 'Make this screen’s room'}</span></button>`;
+  }
+
+  // the other parts of the same device (a camera's pan buttons, privacy switch, motion sensor)
+  // "Front room camera Privacy" shown inside the camera's own panel is just "Privacy"
+  _shortName(e, parent) {
+    const n = this._name(e), p = this._name(parent);
+    return n.toLowerCase().startsWith(p.toLowerCase() + ' ') && n.length > p.length + 2 ? n.charAt(p.length + 1).toUpperCase() + n.slice(p.length + 2) : n;
+  }
+
+  _deviceEntities(id) {
+    const reg = this._hass.entities || {};
+    const dv = reg[id] && reg[id].device_id;
+    if (!dv) return [];
+    return Object.keys(reg).filter((e) => e !== id && reg[e].device_id === dv && !reg[e].hidden && this._hass.states[e]);
+  }
+
+  _cameraHtml(room, id) {
+    const s = this._hass.states[id];
+    const reg = this._hass.entities || {};
+    const parts = this._deviceEntities(id);
+    const words = (e) => ' ' + (this._name(e) + ' ' + e.split('.')[1]).toLowerCase().replace(/[^a-z0-9]+/g, ' ') + ' ';
+    // buttons the camera offers: pan/tilt arrows and zoom, found by name so any brand works
+    const btn = {};
+    parts.filter((e) => e.startsWith('button.')).forEach((e) => {
+      const w = words(e);
+      if (/ zoom ?in /.test(w)) btn.zin = e;
+      else if (/ zoom ?out /.test(w)) btn.zout = e;
+      else ['up', 'down', 'left', 'right'].forEach((d) => { if (w.includes(' ' + d + ' ') && !btn[d]) btn[d] = e; });
+    });
+    const privacy = parts.find((e) => e.startsWith('switch.') && / privacy /.test(words(e)));
+    const switches = parts.filter((e) => e.startsWith('switch.') && (e === privacy || !(reg[e] && reg[e].entity_category)));
+    switches.sort((a, b) => (a === privacy ? -1 : b === privacy ? 1 : 0));
+    const sensors = parts.filter((e) => e.startsWith('binary_sensor.'));
+    const privOn = privacy && this._hass.states[privacy].state === 'on';
+    const off = ['unavailable', 'off'].includes(s.state);
+    const arrow = (d) => btn[d] ? `<button class="ibtn" data-act="press" data-id="${esc(btn[d])}" aria-label="Turn camera ${d}">${svg(d)}</button>` : '<span></span>';
+    const hasPad = btn.up || btn.down || btn.left || btn.right;
+    const note = off ? 'The camera is offline.' : privOn ? 'Privacy is on, so the camera isn’t watching.' : '';
+    return `<div class="shade ${this._opening ? 'opening' : ''}" data-act="close-bg"><div class="panel ${this._opening ? 'opening' : ''}" role="dialog" aria-modal="true" aria-label="${esc(this._name(id))}">
+      <div class="phead">
+        <button class="pill" data-act="back" aria-label="Back to ${esc(room.name)}">${svg('back', 'width="16" height="16"')}<span>${esc(room.name)}</span></button>
+        <div style="display:flex;flex-direction:column;gap:2px"><h2>${esc(this._name(id))}</h2><span class="sub">${esc(sensors.map((e) => this._shortName(e, id) + ': ' + (this._hass.states[e].state === 'on' ? 'yes' : 'no')).join(' · ') || this._stateText(id))}</span></div>
+      </div>
+      <div class="camwrap">
+        <div class="camslot" data-cam="${esc(id)}">${note ? `<div class="camnote">${svg('camera')}<span>${esc(note)}</span></div>` : ''}</div>
+        ${hasPad || btn.zin || btn.zout || switches.length ? `<div style="display:flex;flex-direction:column;gap:18px">
+          ${hasPad ? `<div class="ctl"><span class="ctlbl">Point the camera</span><div class="dpad">
+            <span></span>${arrow('up')}<span></span>${arrow('left')}<span class="mid"></span>${arrow('right')}<span></span>${arrow('down')}<span></span>
+          </div></div>` : ''}
+          ${btn.zin || btn.zout ? `<div class="ctl"><span class="ctlbl">Zoom</span><div class="opts">
+            ${btn.zout ? `<button class="pill" data-act="press" data-id="${esc(btn.zout)}">${svg('minus', 'width="16" height="16"')}Out</button>` : ''}
+            ${btn.zin ? `<button class="pill" data-act="press" data-id="${esc(btn.zin)}">${svg('plus', 'width="16" height="16"')}In</button>` : ''}
+          </div></div>` : ''}
+          ${switches.length ? `<div class="ctl"><span class="ctlbl">Settings</span><div class="opts">
+            ${switches.map((e) => { const on = this._hass.states[e].state === 'on'; return `<button class="pill ${on ? 'warm' : ''}" data-act="toggle" data-id="${esc(e)}" aria-pressed="${on}">${esc(this._shortName(e, id))}: ${on ? 'On' : 'Off'}</button>`; }).join('')}
+          </div></div>` : ''}
+        </div>` : ''}
+      </div>
+    </div></div>`;
+  }
+
+  _camUrl(id, stream) {
+    const s = this._hass.states[id];
+    if (!s) return '';
+    const tok = s.attributes.access_token;
+    if (stream && tok) return '/api/camera_proxy_stream/' + id + '?token=' + encodeURIComponent(tok);
+    const pic = s.attributes.entity_picture || ('/api/camera_proxy/' + id + (tok ? '?token=' + encodeURIComponent(tok) : ''));
+    return pic + (pic.includes('?') ? '&' : '?') + '_=' + Date.now();
+  }
+
+  // The picture lives outside the redraws: the same <img> is moved into each new panel,
+  // so the live stream doesn't restart every time something else in the house changes.
+  _attachCamera() {
+    const slot = this.shadowRoot.querySelector('.camslot');
+    if (!slot) { this._stopCamera(); return; }
+    const id = slot.dataset.cam;
+    if (!this._cam || this._cam.id !== id) {
+      this._stopCamera();
+      const img = document.createElement('img');
+      img.className = 'camimg';
+      img.alt = 'Live picture from ' + this._name(id);
+      const cam = { id, img, still: false };
+      img.onerror = () => {
+        if (this._cam !== cam) return;
+        if (!cam.still) {
+          // no live stream: show a fresh still picture every few seconds instead
+          cam.still = true;
+          cam.timer = setInterval(() => { if (this._cam === cam) img.src = this._camUrl(id, false); }, 3000);
+        }
+      };
+      img.src = this._camUrl(id, true);
+      this._cam = cam;
+    }
+    slot.insertBefore(this._cam.img, slot.firstChild);
+  }
+
+  _stopCamera() {
+    if (!this._cam) return;
+    clearInterval(this._cam.timer);
+    this._cam.img.onerror = null;
+    this._cam.img.removeAttribute('src');
+    this._cam = null;
   }
 
   _lightCaps(s) {
@@ -1185,7 +1588,7 @@ class LumenCard extends HTMLElement {
     if (!t) return;
     const act = t.dataset.act;
     const id = t.dataset.id;
-    if (act === 'close-bg') { if (ev.target !== t) return; this._view.room = null; this._view.entity = null; }
+    if (act === 'close-bg') { if (ev.target !== t) return; if (this._modeNow !== 'small') this._view.room = null; this._view.entity = null; }
     else if (act === 'floor') { this._view = { floor: id || null, room: null, entity: null, kinds: this._view.kinds || [] }; this._edit = null; }
     else if (act === 'kind') { const k = this._view.kinds || []; this._view.kinds = k.includes(id) ? k.filter((x) => x !== id) : k.concat(id); this._view.room = null; this._edit = null; }
     else if (act === 'kinds-done') { this._view.kinds = []; }
@@ -1210,6 +1613,13 @@ class LumenCard extends HTMLElement {
     else if (act === 'close') { this._view.room = null; this._view.entity = null; }
     else if (act === 'back') { this._view.entity = null; }
     else if (act === 'entity') { this._view.entity = id; }
+    else if (act === 'press') { this._hass.callService('button', 'press', { entity_id: id }); return; }
+    else if (act === 'fav') { this._setFav(this._fav() === id ? '' : id); }
+    else if (act === 'sm-up') {
+      const v = this._view;
+      if (v.room) { let fl = null; this._model().forEach((f) => { if (f.rooms.some((r) => r.id === v.room)) fl = f.id; }); this._view = { floor: fl, room: null, entity: null, kinds: [] }; }
+      else this._view = { floor: null, room: null, entity: null, kinds: [] };
+    }
     else if (act === 'toggle') { this._hass.callService('homeassistant', 'toggle', { entity_id: id }); return; }
     else if (act === 'mode') { this._hass.callService('climate', 'set_hvac_mode', { entity_id: id, hvac_mode: t.dataset.mode }); return; }
     else if (act === 'temp') { this._nudge(id, parseFloat(t.dataset.delta)); }

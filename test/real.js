@@ -4,7 +4,7 @@ const LAYOUT = {"back_room":[72.5,45,27.5,55],"dining_room":[40,35,32.5,65],"hal
 const EXTRA = [['toilet','Toilet','0'],['utility_room','Utility Room','0'],['landing1','Landing1','first'],['ensuite','Ensuite','first'],['bathroom','Bathroom','first'],['landing2','Landing2','attic']];
 (async () => {
   const b = await chromium.launch();
-  const p = await b.newPage({ viewport: { width: 1366, height: 710 } });
+  const p = await b.newPage({ viewport: { width: +(process.env.W || 1366), height: +(process.env.H || 710) }, deviceScaleFactor: +(process.env.DSF || 1) });
   p.on('console', (m) => console.log(m.text())); await p.addInitScript(() => { window.LUMEN_DEBUG = 1; }); await p.goto('file://' + __dirname + '/test.html');
   await p.evaluate(([L, E]) => {
     const c = document.getElementById('c'); const h = c._hass;
@@ -14,6 +14,6 @@ const EXTRA = [['toilet','Toilet','0'],['utility_room','Utility Room','0'],['lan
   await p.waitForTimeout(600);
   const sizes = await p.evaluate(() => [...document.getElementById('c').shadowRoot.querySelectorAll('.tag .tn')].map((e) => e.textContent + ':' + e.style.fontSize));
   console.log(sizes.join('  '));
-  await p.screenshot({ path: __dirname + '/real.png' });
+  await p.screenshot({ path: __dirname + '/' + (process.env.OUT || 'real') + '.png' });
   await b.close();
 })();

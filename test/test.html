@@ -21,11 +21,15 @@ const states = {
   'media_player.android_tv': S('playing', {friendly_name:'Android TV', media_title:'Bluey'}),
   'media_player.backroom': S('off', {friendly_name:'Backroom TV'}),
   'media_player.master_bedroom_speaker': S('off', {friendly_name:'Master Bedroom Speaker'}),
-  'camera.front_room_camera': S('idle', {friendly_name:'Front room camera'}),
+  'camera.front_room_camera': S('idle', {friendly_name:'Front room camera', access_token:'abc', entity_picture:'/api/camera_proxy/camera.front_room_camera?token=abc'}),
   'switch.front_room_camera_privacy': S('on', {friendly_name:'Front room camera Privacy'}),
   'switch.front_room_camera_sleep': S('off', {friendly_name:'Front room camera Sleep'}),
   'binary_sensor.front_room_camera_motion': S('off', {friendly_name:'Front room camera Motion', device_class:'motion'}),
   'alarm_control_panel.ezviz_alarm': S('disarmed', {friendly_name:'EZVIZ Alarm'}),
+  'button.front_room_camera_ptz_up': S('unknown', {friendly_name:'Front room camera PTZ up'}),
+  'button.front_room_camera_ptz_down': S('unknown', {friendly_name:'Front room camera PTZ down'}),
+  'button.front_room_camera_ptz_left': S('unknown', {friendly_name:'Front room camera PTZ left'}),
+  'button.front_room_camera_ptz_right': S('unknown', {friendly_name:'Front room camera PTZ right'}),
   'light.kitchen_counter_lights': S('on', {friendly_name:'Kitchen counter lights', supported_color_modes:['onoff'], color_mode:'onoff'}),
   'light.kitchen_bulb': S('on', {friendly_name:'Kitchen bulb', supported_color_modes:['color_temp','hs'], color_mode:'color_temp', brightness:178, color_temp_kelvin:2700, min_color_temp_kelvin:2000, max_color_temp_kelvin:6500})
 };
@@ -34,6 +38,7 @@ const entities = {
   'climate.lollie_room_lollie_room_radiator': {device_id:'d2'}, 'switch.lollie_room_lollie_room_radiator_child_lock': {device_id:'d2', entity_category:'config'},
   'media_player.android_tv': {device_id:'d3'}, 'media_player.backroom': {device_id:'d4'}, 'media_player.master_bedroom_speaker': {device_id:'d5'},
   'camera.front_room_camera': {device_id:'d6'}, 'switch.front_room_camera_privacy': {device_id:'d6'}, 'switch.front_room_camera_sleep': {device_id:'d6'}, 'binary_sensor.front_room_camera_motion': {device_id:'d6'},
+  'button.front_room_camera_ptz_up': {device_id:'d6'}, 'button.front_room_camera_ptz_down': {device_id:'d6'}, 'button.front_room_camera_ptz_left': {device_id:'d6'}, 'button.front_room_camera_ptz_right': {device_id:'d6'},
   'alarm_control_panel.ezviz_alarm': {device_id:'d7'},
   'light.kitchen_counter_lights': {area_id:'kitchen'}, 'light.kitchen_bulb': {area_id:'kitchen'}
 };

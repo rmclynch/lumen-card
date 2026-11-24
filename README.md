@@ -12,11 +12,19 @@ Lumen shows your whole house as glowing floors stacked on top of each other. Roo
 - **Tap to go deeper.** House, then room, then device, with full controls for heating dials and lights (brightness, warm or cool white, colour).
 - **Draw your rooms.** Open a floor, tap **Edit layout**, then drag and resize the rooms to match your home. Overlaps turn red. Saving shares the plan with every screen. Only admins see the button.
 - **Device rail.** Buttons for Lights, Heat, Media, Alerts and the rest open a list of every device of that type, with **All off**.
+- **Counts on the rail.** A small number on each button shows how many of that type are on right now.
+- **This screen's room.** Open a room and tap the star. That screen now opens on that room, and after 5 minutes without a touch it drifts back there, like a lift going home. Each screen remembers its own room.
+- **Cameras.** Tap a camera to see its live picture, with whatever controls it offers in Home Assistant: arrows to point it, zoom, privacy and other switches.
+- **Fits any screen.** Lumen measures itself and picks a layout: the full stacked house on big screens, a scrolling list of floors with a bottom bar on phones, and big simple buttons on small square wall screens (about 4 inches).
 - **Wall screens.** Add `?kiosk` to the dashboard address to hide Home Assistant's menus.
 
 | Floor plan | Drawing rooms | Lights list |
 |---|---|---|
 | ![](docs/images/example-ground.png) | ![](docs/images/floor-editing.png) | ![](docs/images/rail-table.png) |
+
+| Phone | Small wall screen | Camera |
+|---|---|---|
+| ![](docs/images/phone.png) | ![](docs/images/small.png) | ![](docs/images/camera.png) |
 
 ## Before you start
 
@@ -50,6 +58,9 @@ type: custom:lumen-card
 type: custom:lumen-card
 effects: balanced   # subtle, balanced or showy: how much the sky moves
 kiosk: false        # true hides Home Assistant's menus on this screen
+mode: auto          # auto, full, phone or small: force a layout instead of choosing by size
+room: kitchen       # optional: the room a screen opens on if nobody has starred one
+return_after: 5     # minutes without a touch before going back to the starred room (0 = never)
 ```
 
 Room drawings are saved into the card as `layout:` by the **Edit layout** button. You don't need to type them.
