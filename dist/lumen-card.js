@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.5.0';
+const LUMEN_VERSION = '0.5.1';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -127,6 +127,7 @@ nav.lift{position:absolute;right:28px;top:96px;display:flex;flex-direction:colum
 .note{font-size:13px;color:#cfcae6}
 nav.rail{position:absolute;left:24px;top:80px;bottom:16px;width:72px;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:28px;background:rgba(12,14,38,0.68);z-index:5;overflow-y:auto;scrollbar-width:none}
 nav.rail::-webkit-scrollbar{display:none}
+nav.rail *{animation:none !important}
 .kbtn{flex:none;width:56px;min-height:56px;border-radius:18px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#f4f1ff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 0;font-family:var(--lumen-font)}
 .kbtn:hover{background:rgba(255,255,255,0.14)}
 .kbtn.active{background:rgba(255,255,255,0.22);border:2px solid #f4f1ff}
