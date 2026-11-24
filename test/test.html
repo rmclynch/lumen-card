@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%}lumen-card{display:block;height:100vh}</style></head>
+<body>
+<lumen-card id="c"></lumen-card>
+<script src="../dist/lumen-card.js"></script>
+<script>
+const floors = { '0': {floor_id:'0',name:'Ground',level:0}, first:{floor_id:'first',name:'First',level:1}, attic:{floor_id:'attic',name:'Attic',level:2} };
+const areaList = [['living_room','Living Room','0'],['kitchen','Kitchen','0'],['bedroom','Master Bedroom','first'],['dining_room','Dining Room','0'],['back_room','Back Room','0'],['hall','Hall','0'],['eli_room','Eli Room','first'],['martha_room','Martha Room','first'],['lollie_room','Lollie Room','attic'],['jude_room','Jude Room','attic']];
+const areas = {}; areaList.forEach(([id,n,f]) => areas[id] = {area_id:id,name:n,floor_id:f});
+const devices = {
+  d1:{id:'d1',area_id:'jude_room'}, d2:{id:'d2',area_id:'lollie_room'}, d3:{id:'d3',area_id:'living_room'}, d4:{id:'d4',area_id:'back_room'}, d5:{id:'d5',area_id:'bedroom'}, d6:{id:'d6',area_id:'living_room'}, d7:{id:'d7',area_id:'living_room'}
+};
+const S = (state, attributes) => ({ state, attributes });
+const states = {
+  'sun.sun': S('above_horizon', {elevation: window.SUN_EL ?? -12, rising: false}),
+  'weather.forecast_home': S('rainy', {temperature: 8}),
+  'climate.jude_room_jude_room_radiator': S(window.JUDE_STATE || 'unknown', {friendly_name:'Jude room radiator Jude room radiator', current_temperature:15, temperature:12, min_temp:5, max_temp:30, hvac_modes:['off','heat'], target_temp_step:0.5}),
+  'switch.jude_room_jude_room_radiator_child_lock': S('on', {friendly_name:'Jude room radiator Child lock'}),
+  'climate.lollie_room_lollie_room_radiator': S('heat', {friendly_name:'Lollie room radiator Lollie room radiator', current_temperature:16.5, temperature:19, min_temp:5, max_temp:30, hvac_modes:['off','heat'], hvac_action:'heating'}),
+  'switch.lollie_room_lollie_room_radiator_child_lock': S('on', {friendly_name:'Lollie room radiator Child lock'}),
+  'media_player.android_tv': S('playing', {friendly_name:'Android TV', media_title:'Bluey'}),
+  'media_player.backroom': S('off', {friendly_name:'Backroom TV'}),
+  'media_player.master_bedroom_speaker': S('off', {friendly_name:'Master Bedroom Speaker'}),
+  'camera.front_room_camera': S('idle', {friendly_name:'Front room camera'}),
+  'switch.front_room_camera_privacy': S('on', {friendly_name:'Front room camera Privacy'}),
+  'switch.front_room_camera_sleep': S('off', {friendly_name:'Front room camera Sleep'}),
+  'binary_sensor.front_room_camera_motion': S('off', {friendly_name:'Front room camera Motion', device_class:'motion'}),
+  'alarm_control_panel.ezviz_alarm': S('disarmed', {friendly_name:'EZVIZ Alarm'}),
+  'light.kitchen_counter_lights': S('on', {friendly_name:'Kitchen counter lights', supported_color_modes:['onoff'], color_mode:'onoff'}),
+  'light.kitchen_bulb': S('on', {friendly_name:'Kitchen bulb', supported_color_modes:['color_temp','hs'], color_mode:'color_temp', brightness:178, color_temp_kelvin:2700, min_color_temp_kelvin:2000, max_color_temp_kelvin:6500})
+};
+const entities = {
+  'climate.jude_room_jude_room_radiator': {device_id:'d1'}, 'switch.jude_room_jude_room_radiator_child_lock': {device_id:'d1', entity_category:'config'},
+  'climate.lollie_room_lollie_room_radiator': {device_id:'d2'}, 'switch.lollie_room_lollie_room_radiator_child_lock': {device_id:'d2', entity_category:'config'},
+  'media_player.android_tv': {device_id:'d3'}, 'media_player.backroom': {device_id:'d4'}, 'media_player.master_bedroom_speaker': {device_id:'d5'},
+  'camera.front_room_camera': {device_id:'d6'}, 'switch.front_room_camera_privacy': {device_id:'d6'}, 'switch.front_room_camera_sleep': {device_id:'d6'}, 'binary_sensor.front_room_camera_motion': {device_id:'d6'},
+  'alarm_control_panel.ezviz_alarm': {device_id:'d7'},
+  'light.kitchen_counter_lights': {area_id:'kitchen'}, 'light.kitchen_bulb': {area_id:'kitchen'}
+};
+window.calls = [];
+window.savedConfigs = [];
+window.dashCfg = { title: 'Lumen', views: [{ title: 'Home', path: 'home', type: 'panel', cards: [{ type: 'custom:lumen-card' }] }] };
+const connection = { sendMessagePromise: (m) => {
+  if (m.type === 'lovelace/config') return Promise.resolve(JSON.parse(JSON.stringify(window.dashCfg)));
+  if (m.type === 'lovelace/config/save') { window.savedConfigs.push(m); window.dashCfg = m.config; return Promise.resolve(null); }
+  return Promise.reject(new Error('unknown ' + m.type));
+} };
+const hass = { user: { is_admin: true }, connection, states, floors, areas, devices, entities, callService: (d, s, data) => { window.calls.push([d, s, data]); return Promise.resolve(); } };
+const c = document.getElementById('c');
+c.setConfig({});
+c.hass = hass;
+</script>
+</body></html>

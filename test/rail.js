@@ -1,0 +1,22 @@
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1366, height: 767 } });
+  const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto('file://' + __dirname + '/test.html'); await p.waitForTimeout(300);
+  const h = p.locator('lumen-card');
+  console.log('rail:', JSON.stringify(await h.locator('.kbtn .klbl').allInnerTexts()));
+  await p.screenshot({ path: __dirname + '/rail-house.png' });
+  await h.locator('.kbtn[data-id="light"]').click(); await h.locator('.kbtn[data-id="heat"]').click(); await p.waitForTimeout(200);
+  await p.screenshot({ path: __dirname + '/rail-table.png' });
+  console.log('rows:', JSON.stringify((await h.locator('.trow:not(.thead)').allInnerTexts()).map(r => r.replace(/\s+/g, ' ').trim())));
+  await h.locator('button[data-act="alloff"][data-id="light"]').click();
+  await h.locator('button.chip[data-act="open-entity"]').first().click(); await p.waitForTimeout(200);
+  console.log('dial open:', await h.locator('.panel h2').innerText());
+  await h.locator('button.pill[data-act="close"]').count().then(async n => { if (n) await h.locator('button.pill[data-act="close"]').click(); });
+  await h.locator('.shade').count().then(async n => { if (n) await p.mouse.click(5, 5); });
+  await h.locator('.kbtn[data-act="clear"]').click(); await p.waitForTimeout(200);
+  console.log('after clear, house view:', await h.locator('.cardhead h1').innerText());
+  console.log('calls', JSON.stringify(await p.evaluate(() => window.calls)));
+  console.log('errors', JSON.stringify(errs));
+  await b.close();
+})();

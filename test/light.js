@@ -1,0 +1,21 @@
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1366, height: 767 } });
+  const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto('file://' + __dirname + '/test.html'); await p.waitForTimeout(300);
+  const h = p.locator('lumen-card');
+  await h.locator('button.room[data-id="kitchen"]').click(); await p.waitForTimeout(200);
+  console.log('rows:', JSON.stringify((await h.locator('.dev').allInnerTexts()).map(r => r.replace(/\s+/g, ' ').trim())));
+  await h.locator('button.pill[data-act="entity"][data-id="light.kitchen_bulb"]').click(); await p.waitForTimeout(200);
+  await p.screenshot({ path: __dirname + '/light.png' });
+  await h.locator('#lumen-bri').fill('30');
+  await h.locator('#lumen-bri').dispatchEvent('change');
+  await h.locator('#lumen-tone').fill('5000');
+  await h.locator('#lumen-tone').dispatchEvent('change');
+  await h.locator('button.sw[aria-label="Blue"]').click();
+  await h.locator('button.pill[data-act="back"]').click(); await p.waitForTimeout(150);
+  console.log('on/off light has Controls button:', await h.locator('button.pill[data-act="entity"][data-id="light.kitchen_counter_lights"]').count());
+  console.log('calls', JSON.stringify(await p.evaluate(() => window.calls)));
+  console.log('errors', JSON.stringify(errs));
+  await b.close();
+})();
