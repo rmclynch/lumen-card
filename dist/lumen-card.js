@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.2';
+const LUMEN_VERSION = '0.6.3';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -49,6 +49,7 @@ const LUMEN_STYLE = `
 .setrow .shint{font-size:13px;color:#a9a3c6}
 .setrow select{min-height:44px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(20,22,52,0.9);color:#f4f1ff;font-family:var(--lumen-font);font-size:15px;padding:0 12px;max-width:340px}
 .setfoot{font-size:12px;color:#a9a3c6;text-align:center}
+.setfoot a{color:#ffd29a}
 .help{gap:16px}
 .help h3{margin:0 0 4px;font-family:var(--lumen-head);font-size:17px;font-weight:600;color:#ffd29a}
 .help p,.help li{margin:0;font-size:15px;line-height:1.5;color:#e9e5fb}
@@ -1495,7 +1496,7 @@ class LumenCard extends HTMLElement {
         <select data-key="room" aria-label="This screen's room"><option value="" ${fav ? '' : 'selected'}>None: open on the whole house</option>${rooms}</select>
         <span class="shint">The room this screen opens on. You can also tap the star inside a room.</span></div>
       <div class="hsec setrow"><span class="lbl">Go back after</span>${pills('return_after', mins, [['0', 'Never'], ['2', '2 min'], ['5', '5 min'], ['10', '10 min'], ['30', '30 min']])}<span class="shint">How long without a touch before the screen goes back to ${fav ? 'its room' : 'the whole house'}.</span></div>`}
-      <p class="setfoot">Lumen ${esc(LUMEN_VERSION)}</p>
+      <p class="setfoot">Lumen ${esc(LUMEN_VERSION)} · free to use · <a href="https://ko-fi.com/rmclynch" target="_blank" rel="noopener">buy me a coffee</a></p>
     </div></div>`;
   }
 

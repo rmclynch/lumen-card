@@ -81,7 +81,7 @@ node shot.js
 
 ## Support
 
-Lumen is free. If it brightens your home, you can buy me a coffee (link coming soon).
+Lumen is free. If it brightens your home, you can [buy me a coffee on Ko-fi](https://ko-fi.com/rmclynch) ☕
 
 ---
 
