@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.4';
+const LUMEN_VERSION = '0.6.5';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -643,6 +643,9 @@ class LumenCard extends HTMLElement {
     ids.forEach((id) => { const dv = reg[id] && reg[id].device_id; if (dv) (byDevice[dv] = byDevice[dv] || []).push(id); });
     const hasMain = {};
     Object.keys(byDevice).forEach((dv) => { hasMain[dv] = byDevice[dv].some((id) => MAIN.includes(d(id))); });
+    const onBattery = {};
+    Object.keys(byDevice).forEach((dv) => { onBattery[dv] = byDevice[dv].some((id) => d(id) === 'sensor' && st(id) && st(id).attributes.device_class === 'battery'); });
+    const SETTING = /(^|[^a-z])(device[ _]?lock|child[ _]?lock|key[ _]?lock|identify|status[ _]?(led|light)|indicator|window[ _]?(open[ _]?)?detection|away[ _]?mode|boost|eco[ _]?mode|frost|privacy|sleep[ _]?mode|notification|sound|beep|buzzer|calibrat\w*|power[ _]?on[ _]?behaviou?r|do[ _]?not[ _]?disturb|auto[ _]?update|firmware|[a-z]+[ _]mode|[a-z]*[ _]?protection|daylight[ _]?saving|summer[ _]?time)([^a-z]|$)/;
     const isCameraDevice = {};
     Object.keys(byDevice).forEach((dv) => { isCameraDevice[dv] = byDevice[dv].some((id) => d(id) === 'camera'); });
     ids.forEach((id) => {
@@ -654,6 +657,10 @@ class LumenCard extends HTMLElement {
       if (dv && isCameraDevice[dv] && dom !== 'camera') return;
       // other devices with a main part: hide their settings switches
       if (dv && hasMain[dv] && dom === 'switch') return;
+      // a switch on a battery-powered device (a radiator valve, a sensor) is a setting, never a light or a plug
+      if (dom === 'switch' && dv && onBattery[dv]) return;
+      // switches that are clearly settings, whatever the brand: locks, identify, LEDs, window detection...
+      if (dom === 'switch' && SETTING.test(id + ' ' + String(s.attributes.friendly_name || '').toLowerCase())) return;
       const dc = s.attributes.device_class;
       if (dom === 'climate') {
         const cur = num(s.attributes.current_temperature);
