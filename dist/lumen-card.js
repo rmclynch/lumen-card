@@ -11,12 +11,12 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.1';
+const LUMEN_VERSION = '0.6.2';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
 *{box-sizing:border-box}
-.root{position:relative;width:100%;height:calc(100vh - var(--lumen-top, var(--header-height, 56px)));min-height:420px;overflow:hidden;font-family:var(--lumen-font);color:#f4f1ff;transition:background 2s ease}
+.root{position:relative;width:100%;height:calc(100vh - var(--lumen-top, var(--header-height, 56px)));height:calc(100dvh - var(--lumen-top, var(--header-height, 56px)));min-height:420px;overflow:hidden;font-family:var(--lumen-font);color:#f4f1ff;transition:background 2s ease}
 .sun{position:absolute;inset:0;pointer-events:none;transition:background 2s ease}
 .ui{position:absolute;inset:0}
 .fxs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
@@ -210,6 +210,7 @@ nav.rail{padding-top:12px}
 .ibtn:active{background:#f4f1ff;color:#1b1d3f}
 .ibtn svg{width:26px;height:26px}
 /* ---------- phone ---------- */
+.root.m-phone{min-height:300px}
 .m-phone .top{left:12px;right:12px;top:12px}
 .m-phone .brand{padding:8px 16px;gap:10px}
 .m-phone .brand b{font-size:19px}
@@ -258,6 +259,18 @@ nav.rail{padding-top:12px}
 .m-phone .thead{flex-direction:row;flex-wrap:wrap;gap:12px}
 .m-phone .thead > span{display:none}
 .m-phone .dev{padding:6px 8px 6px 12px;flex-wrap:wrap}
+.m-phone .stage + .hint,.m-phone .card > .hint{display:none}
+.m-phone .hint{display:none}
+/* phone on its side: rail down the left, floors down the right, like the big layout but tighter */
+.m-phone.wide .top{top:8px}
+.m-phone.wide nav.rail{left:12px;top:62px;bottom:12px;right:auto;width:64px;flex-direction:column;overflow-x:visible;overflow-y:auto;padding:12px 6px 8px;border-radius:22px}
+.m-phone.wide .kbtn{width:52px;min-height:52px;flex-direction:column;gap:2px;padding:4px 0;border-radius:16px}
+.m-phone.wide .kbtn .klbl{font-size:10px}
+.m-phone.wide .kcount{position:absolute;top:-5px;right:-5px}
+.m-phone.wide nav.lift{left:auto;right:12px;top:62px;bottom:12px;flex-direction:column;justify-content:flex-start;border-radius:28px;padding:6px}
+.m-phone.wide .lbtn{width:44px;height:44px}
+.m-phone.wide .stagewrap{left:88px;right:72px;top:62px;bottom:12px}
+.m-phone.wide .stagewrap.norail{left:12px}
 /* ---------- small square screens ---------- */
 .m-small .smwrap{position:absolute;inset:10px;display:flex;flex-direction:column;gap:10px;z-index:2}
 .smtop{display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 8px 6px 6px;border-radius:22px;background:rgba(12,14,38,0.72)}
@@ -401,6 +414,8 @@ class LumenCard extends HTMLElement {
     this._tick = setInterval(() => { this._sig = ''; this._render(); }, 60000);
     // like a lift going home: after a few minutes without a touch, go back to this screen's own room
     this._idle = setInterval(() => this._goHomeIfIdle(), 15000);
+    // the phone app's header settles a moment after the page opens: measure again once it has
+    [400, 1500, 4000].forEach((ms) => setTimeout(() => { this._topPx = null; this._measureTop(); }, ms));
     this._onResize = () => this._render();
     window.addEventListener('resize', this._onResize);
     if (window.ResizeObserver) {
@@ -461,7 +476,16 @@ class LumenCard extends HTMLElement {
         if (view) { view.style.paddingTop = '0'; view.style.marginTop = '0'; view.style.minHeight = '100vh'; }
       }
       this.style.setProperty('--lumen-top', '0px');
+      this._kioskOn = true;
     } catch (e) { /* Home Assistant changed its layout: leave things as they are */ }
+  }
+
+  _measureTop() {
+    if (this._kioskOn) return;
+    const top = Math.max(0, Math.round(this.getBoundingClientRect().top + (window.scrollY || 0)));
+    if (top === this._topPx) return;
+    this._topPx = top;
+    this.style.setProperty('--lumen-top', top + 'px');
   }
 
   /* ---------- screen size: full, phone or small ---------- */
@@ -821,7 +845,7 @@ class LumenCard extends HTMLElement {
       body = this._tableHtml(floors, floor);
     } else if (floor) {
       body = this._floorHtml(floor, onCount);
-    } else if (mode === 'phone') {
+    } else if (mode === 'phone' && this._config.phone_house === 'list') {
       body = this._phoneHouseHtml(floors, onCount);
     } else {
       body = this._houseHtml(floors, onCount);
@@ -837,7 +861,12 @@ class LumenCard extends HTMLElement {
     this._lastPanelKey = panelKey;
     const panel = v.help === 'settings' ? this._settingsHtml(floors, mode) : v.help ? this._helpHtml(mode) : room && (mode !== 'small' || v.entity) ? this._panelHtml(room) : '';
 
-    const scroll = this.shadowRoot.querySelector('.panel') ? this.shadowRoot.querySelector('.panel').scrollTop : 0;
+    // remember where every scrolling list was, so redraws (a light changing somewhere) don't jump it back to the top
+    const SCROLLERS = ['.panel', '.flist', '.tablewrap', '.planwrap', '.smgrid'];
+    const scrolls = {};
+    SCROLLERS.forEach((q) => { const el = this.shadowRoot.querySelector(q); if (el && el.scrollTop) scrolls[q] = el.scrollTop; });
+    const panelWas = this._lastPanelKeyShown;
+    this._lastPanelKeyShown = panelKey;
     // the sky lives in a shell that is built once, so weather effects keep running smoothly
     // while the rooms and panels above them are redrawn
     let shell = this.shadowRoot.querySelector('.root[data-shell]');
@@ -847,7 +876,8 @@ class LumenCard extends HTMLElement {
       shell = this.shadowRoot.querySelector('.root[data-shell]');
     }
     shell.style.background = sky.bg;
-    shell.className = 'root ' + mood.cls + ' m-' + mode;
+    const hostR = this.getBoundingClientRect();
+    shell.className = 'root ' + mood.cls + ' m-' + mode + (mode === 'phone' && hostR.width > (shell.clientHeight || window.innerHeight) ? ' wide' : '');
     shell.querySelector('.sun').style.background = sky.sun;
     const fxs = shell.querySelector('.fxs');
     if (fxs.dataset.key !== mood.key) { fxs.dataset.key = mood.key; fxs.innerHTML = mood.html; }
@@ -864,8 +894,12 @@ class LumenCard extends HTMLElement {
         ${lift}
         ${panel}`;
     this._attachCamera();
-    const p = this.shadowRoot.querySelector('.panel');
-    if (p && scroll) p.scrollTop = scroll;
+    Object.keys(scrolls).forEach((q) => {
+      if (q === '.panel' && panelWas !== panelKey) return; // a newly opened panel starts at its top
+      const el = this.shadowRoot.querySelector(q);
+      if (el) el.scrollTop = scrolls[q];
+    });
+    this._measureTop();
     // the stacked view sizes itself from the stage, so redraw once the stage has a real size
     const st = this.shadowRoot.querySelector('.stage');
     if (st) {
