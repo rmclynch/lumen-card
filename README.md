@@ -1,3 +1,5 @@
+<img src="docs/icon/lumen-icon.png" alt="Lumen icon" width="96" align="right">
+
 # Lumen
 
 A living-sky dashboard card for Home Assistant.
