@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#24264f"/><stop offset="0.5" stop-color="#7a3f6b"/><stop offset="0.82" stop-color="#d8645e"/><stop offset="1" stop-color="#f3a65a"/></linearGradient>
+<linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101233"/><stop offset="1" stop-color="#2b2d63"/></linearGradient>
+<radialGradient id="sun" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffe3b0"/><stop offset="1" stop-color="#ffb35a" stop-opacity="0"/></radialGradient>
+<filter id="g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+</defs>
+<rect width="512" height="512" fill="url(#night)"/>
+<circle cx="370" cy="130" r="34" fill="#f4f1ff" opacity="0.9"/>
+<circle cx="384" cy="120" r="30" fill="#141640"/>
+<polygon points="90,340 240,253.45 390,340 240,426.55" fill="#23265a" stroke="#ffffff44" stroke-width="6" stroke-linejoin="round"/>
+<polygon points="90,250 240,163.45 390,250 240,336.55" fill="#23265a" stroke="#ffffff55" stroke-width="6" stroke-linejoin="round"/><polygon points="150.0,251.731 213.0,215.38 276.0,251.731 213.0,288.082" fill="#ffc47a" filter="url(#g)"/><polygon points="150.0,251.731 213.0,215.38 276.0,251.731 213.0,288.082" fill="#ffc47a"/>
+</svg>
