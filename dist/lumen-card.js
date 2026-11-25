@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.0';
+const LUMEN_VERSION = '0.6.1';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -39,6 +39,28 @@ const LUMEN_STYLE = `
 .calm .fxs *,.calm .badge svg{animation:none !important}
 .calm .fxp{display:none}
 .glass{-webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15)}
+.topr{display:flex;align-items:center;gap:10px}
+.setbtn{width:40px;height:40px;border-radius:999px;border:0;background:transparent;color:rgba(244,241,255,0.55);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.setbtn svg{width:20px;height:20px}
+.setbtn:hover,.setbtn:focus-visible{color:#f4f1ff;background:rgba(255,255,255,0.1)}
+.m-small .setbtn{width:44px;height:44px}
+.setrow{display:flex;flex-direction:column;gap:8px}
+.setrow .lbl{font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#cfcae6}
+.setrow .shint{font-size:13px;color:#a9a3c6}
+.setrow select{min-height:44px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);background:rgba(20,22,52,0.9);color:#f4f1ff;font-family:var(--lumen-font);font-size:15px;padding:0 12px;max-width:340px}
+.setfoot{font-size:12px;color:#a9a3c6;text-align:center}
+.help{gap:16px}
+.help h3{margin:0 0 4px;font-family:var(--lumen-head);font-size:17px;font-weight:600;color:#ffd29a}
+.help p,.help li{margin:0;font-size:15px;line-height:1.5;color:#e9e5fb}
+.help ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.help .hsec{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)}
+.help .hnow{background:rgba(255,210,154,0.12);border-color:rgba(255,210,154,0.45)}
+.help table{border-collapse:collapse;width:100%;font-size:14px}
+.help th,.help td{text-align:left;padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.help th{font-weight:600;color:#cfcae6;font-size:13px}
+.help td.y{color:#9be7b0;font-weight:600}
+.help td.n{color:#a9a3c6}
+.help th.cur,.help td.cur{background:rgba(255,210,154,0.1)}
 .top{position:absolute;left:24px;right:24px;top:20px;display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:5}
 .brand{display:flex;align-items:baseline;gap:14px;padding:10px 22px;border-radius:999px;background:rgba(12,14,38,0.68)}
 .brand b{font-family:var(--lumen-head);font-size:24px;font-weight:700;letter-spacing:.5px}
@@ -308,6 +330,8 @@ const ICON = {
   alert: '<path d="M12 3l10 18H2z"></path><path d="M12 10v4"></path>',
   close: '<path d="M6 6l12 12"></path><path d="M18 6L6 18"></path>',
   back: '<path d="M15 18l-6-6 6-6"></path>',
+  gear: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path>',
+  book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"></path><path d="M4 21a2 2 0 0 1 2-2h13v2"></path>',
   star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path>',
   camera: '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.5"></circle>',
   up: '<path d="M6 15l6-6 6 6"></path>',
@@ -334,6 +358,7 @@ class LumenCard extends HTMLElement {
     this._sig = '';
     this._onClick = this._onClick.bind(this);
     this.shadowRoot.addEventListener('click', this._onClick);
+    this.shadowRoot.addEventListener('change', (e) => this._onSetChange(e));
     this._lastTouch = Date.now();
     const touched = () => { this._lastTouch = Date.now(); };
     this.shadowRoot.addEventListener('pointerdown', touched, true);
@@ -442,7 +467,7 @@ class LumenCard extends HTMLElement {
   /* ---------- screen size: full, phone or small ---------- */
 
   _mode() {
-    const forced = this._config && this._config.mode;
+    const forced = this._screen().mode || (this._config && this._config.mode);
     if (['full', 'phone', 'small'].includes(forced)) return forced;
     const r = this.getBoundingClientRect();
     const w = r.width || window.innerWidth;
@@ -452,6 +477,32 @@ class LumenCard extends HTMLElement {
     if (w <= 620 && h <= 620 && ratio > 0.7 && ratio < 1.45) return 'small';
     if (w < 720 || h < 460) return 'phone';
     return 'full';
+  }
+
+  /* ---------- settings kept on this screen only ---------- */
+
+  _screenKey() { return 'lumen-screen:' + (window.location.pathname || ''); }
+
+  _screen() {
+    if (this._screenMem) return this._screenMem;
+    let v = {};
+    try { v = JSON.parse(window.localStorage.getItem(this._screenKey()) || '{}') || {}; } catch (e) { v = {}; }
+    this._screenMem = v;
+    return v;
+  }
+
+  _setScreen(key, val) {
+    const v = Object.assign({}, this._screen());
+    if (val === '' || val === 'auto' || val == null) delete v[key]; else v[key] = val;
+    this._screenMem = v;
+    try { window.localStorage.setItem(this._screenKey(), JSON.stringify(v)); } catch (e) { /* kept for this visit */ }
+    if (key === 'effects') { const fx = this.shadowRoot.querySelector('.fxs'); if (fx) fx.dataset.key = ''; }
+  }
+
+  _returnMins() {
+    const sv = this._screen().return_after;
+    if (sv != null) return num(sv);
+    return this._config && this._config.return_after != null ? num(this._config.return_after) : 5;
   }
 
   /* ---------- this screen's favourite room ---------- */
@@ -481,13 +532,22 @@ class LumenCard extends HTMLElement {
     return { floor: null, room: has ? fav : null, entity: null, kinds: [] };
   }
 
+  _onSetChange(ev) {
+    const t = ev.target.closest && ev.target.closest('select[data-key]');
+    if (!t) return;
+    if (t.dataset.key === 'room') this._setFav(t.value);
+    else this._setScreen(t.dataset.key, t.value);
+    this._sig = '';
+    this._render();
+  }
+
   _goHomeIfIdle() {
-    const mins = this._config && this._config.return_after != null ? num(this._config.return_after) : 5;
+    const mins = this._returnMins();
     if (!mins || !this._hass || this._edit || this._drag || this._sliding) return;
     if (Date.now() - this._lastTouch < mins * 60000) return;
     const home = this._homeView();
     const v = this._view;
-    const same = (v.floor || null) === home.floor && (v.room || null) === home.room && (v.entity || null) === null && !(v.kinds || []).length;
+    const same = !v.help && (v.floor || null) === home.floor && (v.room || null) === home.room && (v.entity || null) === null && !(v.kinds || []).length;
     if (same) return;
     this._view = home;
     this._sig = '';
@@ -654,7 +714,7 @@ class LumenCard extends HTMLElement {
   /* ---------- living sky: weather, season and effects ---------- */
 
   _effects() {
-    let e = (this._config && this._config.effects) || 'balanced';
+    let e = this._screen().effects || (this._config && this._config.effects) || 'balanced';
     try { if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) e = 'subtle'; } catch (err) { /* ignore */ }
     return ['subtle', 'balanced', 'showy'].includes(e) ? e : 'balanced';
   }
@@ -772,10 +832,10 @@ class LumenCard extends HTMLElement {
       ${(mode === 'phone' ? floors : floors.slice().reverse()).map((f) => `<button class="lbtn ${floor && floor.id === f.id ? 'active' : ''}" data-act="floor" data-id="${esc(f.id)}" aria-label="${esc(f.name)}" aria-pressed="${!!(floor && floor.id === f.id)}">${esc(f.short)}</button>`).join('')}
     </nav>` : '';
 
-    const panelKey = room ? room.id + '/' + (v.entity || '') : '';
+    const panelKey = v.help ? 'help/' + v.help : room ? room.id + '/' + (v.entity || '') : '';
     this._opening = !!panelKey && panelKey !== this._lastPanelKey;
     this._lastPanelKey = panelKey;
-    const panel = room && (mode !== 'small' || v.entity) ? this._panelHtml(room) : '';
+    const panel = v.help === 'settings' ? this._settingsHtml(floors, mode) : v.help ? this._helpHtml(mode) : room && (mode !== 'small' || v.entity) ? this._panelHtml(room) : '';
 
     const scroll = this.shadowRoot.querySelector('.panel') ? this.shadowRoot.querySelector('.panel').scrollTop : 0;
     // the sky lives in a shell that is built once, so weather effects keep running smoothly
@@ -797,7 +857,7 @@ class LumenCard extends HTMLElement {
       : `
         <div class="top">
           <div class="brand glass"><b>Lumen</b><span>${esc(time)} · ${esc(sky.name)}${mode === 'phone' ? '' : ' · ' + esc(mood.season)}</span></div>
-          ${wxHtml}
+          <div class="topr">${wxHtml}${this._config.settings === false ? '' : `<button class="setbtn" data-act="settings" aria-label="Settings and help">${svg('gear')}</button>`}</div>
         </div>
         ${rail}
         <div class="stagewrap ${rail ? '' : 'norail'}">${body}</div>
@@ -1035,7 +1095,7 @@ class LumenCard extends HTMLElement {
     }).join('');
     const fav = this._fav();
     const favRoom = fav && floors.reduce((a, f) => a || f.rooms.find((r) => r.id === fav), null);
-    return `<div class="smtop" style="padding-left:16px"><h1>Lumen</h1>${wx && wx.attributes.temperature != null ? `<span class="smsub">${esc(WX_NAMES[wx.state] || wx.state)}</span><span class="smt">${esc(Math.round(wx.attributes.temperature))}°</span>` : ''}${favRoom ? `<button class="smbtn on" data-act="room" data-id="${esc(favRoom.id)}" aria-label="Back to ${esc(favRoom.name)}">${svg('star')}</button>` : ''}</div>
+    return `<div class="smtop" style="padding-left:16px"><h1>Lumen</h1>${this._config.settings === false ? '' : `<button class="setbtn" data-act="settings" aria-label="Settings and help">${svg('gear')}</button>`}${wx && wx.attributes.temperature != null ? `<span class="smsub">${esc(WX_NAMES[wx.state] || wx.state)}</span><span class="smt">${esc(Math.round(wx.attributes.temperature))}°</span>` : ''}${favRoom ? `<button class="smbtn on" data-act="room" data-id="${esc(favRoom.id)}" aria-label="Back to ${esc(favRoom.name)}">${svg('star')}</button>` : ''}</div>
       <div class="smgrid one">${tiles}</div>`;
   }
 
@@ -1380,6 +1440,75 @@ class LumenCard extends HTMLElement {
     </div></div>`;
   }
 
+  /* ---------- settings: discreet, behind the gear ---------- */
+
+  _settingsHtml(floors, mode) {
+    const sc = this._screen();
+    const pills = (key, cur, opts) => `<div class="opts">${opts.map(([val, label]) => `<button class="pill ${cur === val ? 'on' : ''}" data-act="set" data-key="${key}" data-val="${val}" aria-pressed="${cur === val}">${label}</button>`).join('')}</div>`;
+    const fav = this._fav() || '';
+    const rooms = floors.map((f) => `<optgroup label="${esc(f.name)}">${f.rooms.map((r) => `<option value="${esc(r.id)}" ${r.id === fav ? 'selected' : ''}>${esc(r.name)}</option>`).join('')}</optgroup>`).join('');
+    const mins = String(this._returnMins());
+    return `<div class="shade ${this._opening ? 'opening' : ''}" data-act="close-bg"><div class="panel help ${this._opening ? 'opening' : ''}" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="phead">
+        <button class="pill" data-act="help-close" aria-label="Close">${svg('close', 'width="16" height="16"')}<span>Close</span></button>
+        <h2>Settings</h2>
+        <div class="right"><button class="pill" data-act="help">${svg('book', 'width="16" height="16"')}<span>How to use Lumen</span></button></div>
+      </div>
+      <div class="hsec hnow"><p>These settings are saved on <b>this screen only</b>, so each tablet or phone can be set up its own way.</p></div>
+      <div class="hsec setrow"><span class="lbl">Sky effects</span>${pills('effects', this._effects(), [['subtle', 'Subtle'], ['balanced', 'Balanced'], ['showy', 'Showy']])}<span class="shint">How much the rain, snow and clouds move.</span></div>
+      <div class="hsec setrow"><span class="lbl">Layout</span>${pills('mode', sc.mode || 'auto', [['auto', 'Automatic'], ['full', 'Big'], ['phone', 'Phone'], ['small', 'Small']])}<span class="shint">Automatic picks by screen size. This screen is using the ${mode === 'full' ? 'big' : mode} layout now.</span></div>
+      ${mode === 'phone' ? '' : `<div class="hsec setrow"><span class="lbl">This screen's room</span>
+        <select data-key="room" aria-label="This screen's room"><option value="" ${fav ? '' : 'selected'}>None: open on the whole house</option>${rooms}</select>
+        <span class="shint">The room this screen opens on. You can also tap the star inside a room.</span></div>
+      <div class="hsec setrow"><span class="lbl">Go back after</span>${pills('return_after', mins, [['0', 'Never'], ['2', '2 min'], ['5', '5 min'], ['10', '10 min'], ['30', '30 min']])}<span class="shint">How long without a touch before the screen goes back to ${fav ? 'its room' : 'the whole house'}.</span></div>`}
+      <p class="setfoot">Lumen ${esc(LUMEN_VERSION)}</p>
+    </div></div>`;
+  }
+
+  /* ---------- how to use Lumen ---------- */
+
+  _helpHtml(mode) {
+    const admin = !!(this._hass.user && this._hass.user.is_admin);
+    const names = { full: 'big screen', phone: 'phone', small: 'small screen' };
+    const row = (what, f, p, sm) => `<tr><td>${what}</td>${[['full', f], ['phone', p], ['small', sm]].map(([m, ok]) => `<td class="${ok ? 'y' : 'n'} ${m === mode ? 'cur' : ''}">${ok ? 'Yes' : 'No'}</td>`).join('')}</tr>`;
+    const head = ['full', 'phone', 'small'].map((m) => `<th class="${m === mode ? 'cur' : ''}">${m === 'full' ? 'Big' : m === 'phone' ? 'Phone' : 'Small'}</th>`).join('');
+    const getAround = mode === 'small'
+      ? `<ul><li>Tap a <b>floor</b>, then a <b>room</b>, to see its devices.</li><li>Tap a device to switch it on or off. Tap the <b>›</b> button on a light for brightness and colour.</li><li>Tap a heater or camera to open its controls.</li><li>The <b>‹</b> button at the top goes back one step.</li></ul>`
+      : `<ul><li>Tap a <b>room</b> to see everything in it and switch things on or off.</li><li>Tap <b>Controls</b> for heating dials, or brightness and colour on lights. Tap <b>View</b> to see a camera.</li><li>The <b>floor buttons</b> ${mode === 'phone' ? 'along the bottom' : 'on the right'} show one floor bigger. The house button shows everything.</li></ul>`;
+    const rail = mode === 'small' ? '' : `<div class="hsec"><h3>Device buttons</h3><ul>
+        <li>The buttons ${mode === 'phone' ? 'along the top' : 'on the left'} (Lights, Heat and so on) list every device of that type, floor by floor.</li>
+        <li>The number on a button shows how many are on right now.</li>
+        <li>Tap more than one to see them together. <b>All off</b> switches off everything in the list.</li></ul></div>`;
+    const star = mode === 'phone' ? '' : `<div class="hsec"><h3>This screen's room</h3><ul>
+        <li>Open a room and tap the <b>star</b>. This screen now opens on that room.</li>
+        <li>${this._returnMins() ? `If nobody touches the screen for ${esc(this._returnMins())} minutes, it goes back to that room by itself.` : 'You can make the screen go back to that room by itself in Settings.'}</li>
+        <li>Tap the star again to stop. Each screen remembers its own room.</li></ul></div>`;
+    const draw = mode === 'full' ? `<div class="hsec"><h3>Drawing your rooms</h3><ul>
+        <li>${admin ? 'Tap a floor button, then <b>Edit layout</b>.' : 'An admin can do this: tap a floor button, then <b>Edit layout</b>.'}</li>
+        <li>Drag a room to move it. Drag its corner to resize it. Rooms that overlap turn red.</li>
+        <li><b>Save layout</b> shares the drawing with every screen.</li></ul></div>` : '';
+    return `<div class="shade ${this._opening ? 'opening' : ''}" data-act="close-bg"><div class="panel help ${this._opening ? 'opening' : ''}" role="dialog" aria-modal="true" aria-label="How to use Lumen">
+      <div class="phead">
+        <button class="pill" data-act="settings" aria-label="Back to settings">${svg('back', 'width="16" height="16"')}<span>Settings</span></button>
+        <h2>How to use Lumen</h2>
+      </div>
+      <div class="hsec hnow"><p>This screen is using the <b>${names[mode]}</b> layout. Lumen picks the layout by itself from the screen size, so some things only appear on bigger screens.</p></div>
+      <div class="hsec"><h3>Getting around</h3>${getAround}</div>
+      ${rail}${star}${draw}
+      <div class="hsec"><h3>What works where</h3><table>
+        <thead><tr><th></th>${head}</tr></thead>
+        <tbody>
+          ${row('Switch things on and off', 1, 1, 1)}
+          ${row('Heating, light and camera controls', 1, 1, 1)}
+          ${row('Whole house at a glance', 1, 1, 0)}
+          ${row('Device buttons and lists', 1, 1, 0)}
+          ${row('This screen’s room (star)', 1, 0, 1)}
+          ${row('Drawing rooms', 1, 0, 0)}
+        </tbody></table></div>
+      <div class="hsec"><h3>The sky</h3><p>The background follows the real sun and your weather: dawn to night, rain, snow, fog, wind and the seasons.</p></div>
+    </div></div>`;
+  }
+
   _starBtn(room, small) {
     if (this._modeNow === 'phone') return '';
     const on = this._fav() === room.id;
@@ -1588,7 +1717,8 @@ class LumenCard extends HTMLElement {
     if (!t) return;
     const act = t.dataset.act;
     const id = t.dataset.id;
-    if (act === 'close-bg') { if (ev.target !== t) return; if (this._modeNow !== 'small') this._view.room = null; this._view.entity = null; }
+    if (act === 'close-bg' && this._view.help) { if (ev.target !== t) return; this._view.help = false; }
+    else if (act === 'close-bg') { if (ev.target !== t) return; if (this._modeNow !== 'small') this._view.room = null; this._view.entity = null; }
     else if (act === 'floor') { this._view = { floor: id || null, room: null, entity: null, kinds: this._view.kinds || [] }; this._edit = null; }
     else if (act === 'kind') { const k = this._view.kinds || []; this._view.kinds = k.includes(id) ? k.filter((x) => x !== id) : k.concat(id); this._view.room = null; this._edit = null; }
     else if (act === 'kinds-done') { this._view.kinds = []; }
@@ -1613,6 +1743,10 @@ class LumenCard extends HTMLElement {
     else if (act === 'close') { this._view.room = null; this._view.entity = null; }
     else if (act === 'back') { this._view.entity = null; }
     else if (act === 'entity') { this._view.entity = id; }
+    else if (act === 'settings') { this._view.help = 'settings'; }
+    else if (act === 'help') { this._view.help = 'howto'; }
+    else if (act === 'help-close') { this._view.help = false; }
+    else if (act === 'set') { this._setScreen(t.dataset.key, t.dataset.val); }
     else if (act === 'press') { this._hass.callService('button', 'press', { entity_id: id }); return; }
     else if (act === 'fav') { this._setFav(this._fav() === id ? '' : id); }
     else if (act === 'sm-up') {

@@ -16,6 +16,7 @@ Lumen shows your whole house as glowing floors stacked on top of each other. Roo
 - **This screen's room.** Open a room and tap the star. That screen now opens on that room, and after 5 minutes without a touch it drifts back there, like a lift going home. Each screen remembers its own room.
 - **Cameras.** Tap a camera to see its live picture, with whatever controls it offers in Home Assistant: arrows to point it, zoom, privacy and other switches.
 - **Fits any screen.** Lumen measures itself and picks a layout: the full stacked house on big screens, a scrolling list of floors with a bottom bar on phones, and big simple buttons on small square wall screens (about 4 inches).
+- **Settings and help.** A small gear at the top right opens settings for that screen (sky effects, layout, this screen's room, how long before it goes back) and a short **How to use Lumen** guide. It says which layout the screen is on and which features only appear on bigger screens.
 - **Wall screens.** Add `?kiosk` to the dashboard address to hide Home Assistant's menus.
 
 | Floor plan | Drawing rooms | Lights list |
@@ -58,6 +59,7 @@ type: custom:lumen-card
 type: custom:lumen-card
 effects: balanced   # subtle, balanced or showy: how much the sky moves
 kiosk: false        # true hides Home Assistant's menus on this screen
+settings: true      # false hides the gear button
 mode: auto          # auto, full, phone or small: force a layout instead of choosing by size
 room: kitchen       # optional: the room a screen opens on if nobody has starred one
 return_after: 5     # minutes without a touch before going back to the starred room (0 = never)
