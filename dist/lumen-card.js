@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.3';
+const LUMEN_VERSION = '0.6.4';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
