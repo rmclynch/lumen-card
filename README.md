@@ -40,11 +40,22 @@ Lumen builds itself from Home Assistant's **floors** and **areas**, so set those
 
 ## Install
 
-### Marketplace
+### Marketplace (recommended)
 
-Coming soon.
+[![Open your Home Assistant instance and open Lumen in the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=rmclynch&repository=lumen-card&category=plugin)
 
-### By hand
+1. In Home Assistant, open the **Marketplace** and search for **Lumen**, or click the button above.
+2. Click **Download**. The Marketplace adds the card to your dashboards for you.
+3. Refresh your browser.
+4. Make a new dashboard, choose the **Panel** view type, and add this card:
+
+```yaml
+type: custom:lumen-card
+```
+
+Updates appear in **Settings** like any other update.
+
+### By hand (if you don't use the Marketplace)
 
 1. Download `dist/lumen-card.js`.
 2. Copy it into your Home Assistant `config/www/` folder.
