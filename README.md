@@ -66,6 +66,18 @@ Updates appear in **Settings** like any other update.
 type: custom:lumen-card
 ```
 
+## Wall screens and tablets
+
+To hide Home Assistant's own menus and title bar, add `?kiosk` to the end of the dashboard's address, for example:
+
+```
+http://homeassistant.local:8123/lumen-home/home?kiosk
+```
+
+Save that address as the tablet's home page or bookmark. To get the menus back, open the address without `?kiosk`. You can also set `kiosk: true` in the card's options to always hide them on every screen.
+
+For a screen that belongs to one room, open that room and tap the star. The screen will open there and drift back to it after a few minutes without a touch.
+
 ## Options
 
 ```yaml

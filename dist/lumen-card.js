@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.5';
+const LUMEN_VERSION = '0.6.6';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -1547,6 +1547,10 @@ class LumenCard extends HTMLElement {
           ${row('This screen’s room (star)', 1, 0, 1)}
           ${row('Drawing rooms', 1, 0, 0)}
         </tbody></table></div>
+      ${mode === 'phone' ? '' : `<div class="hsec"><h3>Wall screens and tablets</h3><ul>
+        <li>To hide Home Assistant's own menus and title bar, add <b>?kiosk</b> to the end of this page's address:<br><code style="font-size:13px;word-break:break-all">${esc(location.origin + location.pathname)}?kiosk</code></li>
+        <li>Save that address as the tablet's home page or bookmark.</li>
+        <li>To get the menus back, open the address without <b>?kiosk</b>.</li></ul></div>`}
       <div class="hsec"><h3>The sky</h3><p>The background follows the real sun and your weather: dawn to night, rain, snow, fog, wind and the seasons.</p></div>
     </div></div>`;
   }
