@@ -1117,7 +1117,7 @@ class LumenCard extends HTMLElement {
   }
 
   _railHtml(floors) {
-    const KINDS = [['light', 'Lights'], ['heat', 'Heat'], ['cool', 'Cool'], ['fan', 'Fans'], ['media', 'Media'], ['open', 'Open'], ['plug', 'Plugs'], ['alert', 'Alerts']];
+    const KINDS = [['light', 'Lights'], ['heat', 'Heat'], ['cool', 'Cool'], ['fan', 'Fans'], ['media', 'Media'], ['open', 'Open'], ['plug', 'Plugs'], ['camera', 'Cameras'], ['alert', 'Alerts']];
     const present = {};
     floors.forEach((f) => f.rooms.forEach((r) => r.devs.forEach((id) => { present[this._kindOf(id)] = true; })));
     const sel = this._view.kinds || [];
@@ -1131,6 +1131,7 @@ class LumenCard extends HTMLElement {
       media: `<span class="badge">${svg('media')}</span>`,
       open: `<span class="badge">${svg('door')}</span>`,
       plug: `<span class="badge">${svg('plug')}</span>`,
+      camera: `<span class="badge">${svg('camera')}</span>`,
       alert: `<span class="mroom alert">${svg('alert')}</span>`
     }[k]);
     const btns = KINDS.filter(([k]) => present[k]).map(([k, label]) => `<button class="kbtn ${sel.includes(k) ? 'active' : ''}" data-act="kind" data-id="${k}" aria-pressed="${sel.includes(k)}" aria-label="Show all ${label.toLowerCase()}${counts[k] ? ', ' + counts[k] + ' on' : ''}">
@@ -1143,8 +1144,8 @@ class LumenCard extends HTMLElement {
   }
 
   _tableHtml(floors, floor) {
-    const NAMES = { light: 'Lights', heat: 'Heating', cool: 'Cooling', fan: 'Fans', media: 'Media', open: 'Doors & windows', plug: 'Plugs', alert: 'Alerts' };
-    const kinds = ['light', 'heat', 'cool', 'fan', 'media', 'open', 'plug', 'alert'].filter((k) => (this._view.kinds || []).includes(k));
+    const NAMES = { light: 'Lights', heat: 'Heating', cool: 'Cooling', fan: 'Fans', media: 'Media', open: 'Doors & windows', plug: 'Plugs', camera: 'Cameras', alert: 'Alerts' };
+    const kinds = ['light', 'heat', 'cool', 'fan', 'media', 'open', 'plug', 'camera', 'alert'].filter((k) => (this._view.kinds || []).includes(k));
     const scope = floor ? [floor] : floors;
     const cols = `grid-template-columns:170px repeat(${kinds.length},minmax(0,1fr))`;
     let onCount = 0;
@@ -1165,6 +1166,7 @@ class LumenCard extends HTMLElement {
             const on = s.state === 'on' || (dom === 'climate' && ['heat', 'cool', 'heat_cool', 'auto', 'dry', 'fan_only'].includes(s.state));
             if (on) onCount++;
             const label = this._stateText(id);
+            if (dom === 'camera') return `<button class="chip" data-act="open-entity" data-room="${esc(r.id)}" data-id="${esc(id)}" aria-label="View ${esc(this._name(id))}">${esc(this._name(id))}<span class="st">View</span></button>`;
             if (dom === 'climate') return `<button class="chip ${on ? 'on' : ''}" data-act="open-entity" data-room="${esc(r.id)}" data-id="${esc(id)}">${esc(this._name(id))}<span class="st">${esc(label)}</span></button>`;
             if (['light', 'switch', 'fan'].includes(dom) && !['unavailable', 'unknown'].includes(s.state)) return `<button class="chip ${on ? 'on' : ''}" data-act="toggle" data-id="${esc(id)}" aria-pressed="${on}">${esc(this._name(id))}<span class="st">${on ? 'On' : 'Off'}</span></button>`;
             return `<span class="chip static ${on ? 'on' : ''}">${esc(this._name(id))}<span class="st">${esc(label)}</span></span>`;
@@ -1175,7 +1177,7 @@ class LumenCard extends HTMLElement {
       return rows ? `<div class="tfloor">${esc(f.name)}</div>${rows}` : '';
     }).join('');
     return `<div class="card">
-      <div class="cardhead"><h1>${kinds.map((k) => NAMES[k]).join(' + ')}</h1><div class="headbtns"><span style="font-size:14px;color:#cfcae6">${floor ? esc(floor.name) : 'Whole house'} · ${onCount} on</span><button class="pill small" data-act="kinds-done">Back to map</button></div></div>
+      <div class="cardhead"><h1>${kinds.map((k) => NAMES[k]).join(' + ')}</h1><div class="headbtns"><span style="font-size:14px;color:#cfcae6">${floor ? esc(floor.name) : 'Whole house'}${kinds.every((k) => k === 'camera') ? '' : ' · ' + onCount + ' on'}</span><button class="pill small" data-act="kinds-done">Back to map</button></div></div>
       <div class="tablewrap">${head}${groups || '<p class="empty" style="margin:14px">Nothing of this type here.</p>'}</div>
     </div>`;
   }

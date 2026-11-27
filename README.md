@@ -13,7 +13,7 @@ Lumen shows your whole house as glowing floors stacked on top of each other. Roo
 - **Whole house at a glance.** Every floor, every room, with a glow for lights and a tint for heating or cooling.
 - **Tap to go deeper.** House, then room, then device, with full controls for heating dials and lights (brightness, warm or cool white, colour).
 - **Draw your rooms.** Open a floor, tap **Edit layout**, then drag and resize the rooms to match your home. Overlaps turn red. Saving shares the plan with every screen. Only admins see the button.
-- **Device rail.** Buttons for Lights, Heat, Media, Alerts and the rest open a list of every device of that type, with **All off**.
+- **Device rail.** Buttons for Lights, Heat, Media, Cameras, Alerts and the rest open a list of every device of that type, with **All off**.
 - **Counts on the rail.** A small number on each button shows how many of that type are on right now.
 - **This screen's room.** Open a room and tap the star. That screen now opens on that room, and after 5 minutes without a touch it drifts back there, like a lift going home. Each screen remembers its own room.
 - **Cameras.** Tap a camera to see its live picture, with whatever controls it offers in Home Assistant: arrows to point it, zoom, privacy and other switches.
