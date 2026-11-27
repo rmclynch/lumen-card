@@ -11,7 +11,7 @@
  * in a panel view.
  */
 
-const LUMEN_VERSION = '0.6.6';
+const LUMEN_VERSION = '0.7.0';
 
 const LUMEN_STYLE = `
 :host{display:block;height:100%;--lumen-font:Inter,'Segoe UI',Roboto,system-ui,sans-serif;--lumen-head:'Space Grotesk',Inter,'Segoe UI',system-ui,sans-serif}
@@ -318,6 +318,27 @@ nav.rail{padding-top:12px}
 @keyframes lumenSpin{to{transform:rotate(360deg)}}
 .spin{animation:lumenSpin 2.4s linear infinite;transform-origin:50% 50%}
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+
+/* energy */
+.enpill{white-space:nowrap;display:flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,210,154,0.45);background:rgba(12,14,38,0.68);color:#f4f1ff;font-family:var(--lumen-font);font-size:15px;cursor:pointer}
+.enpill svg{width:18px;height:18px;color:#ffd29a}
+.enpill:hover,.enpill:focus-visible{background:rgba(255,255,255,0.14)}
+.m-phone .enpill{min-height:36px;padding:0 12px;font-size:13px}
+.kbtn .ensun{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#ffd29a}
+.kbtn .ensun svg{width:22px;height:22px}
+.enwrap{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center}
+.enwrap svg.flow{width:100%;height:100%;max-height:100%}
+.flow text{fill:#f4f1ff;font-family:var(--lumen-font)}
+.flow .elbl{font-size:22px;font-weight:600}
+.flow .eval{font-size:26px;font-family:var(--lumen-head);font-weight:700}
+.flow .esub{font-size:18px;fill:#cfcae6}
+.flow .ebase{fill:none;stroke:rgba(255,255,255,0.14);stroke-width:6;stroke-linecap:round}
+.flow .eline{fill:none;stroke-width:7;stroke-linecap:round;stroke-dasharray:1 17;animation:lumenFlow linear infinite}
+.flow .eline.idle{display:none}
+.flow .enode{fill:rgba(14,16,40,0.85);stroke-width:3}
+@keyframes lumenFlow{from{stroke-dashoffset:18}to{stroke-dashoffset:0}}
+.calm .flow .eline{animation:none}
+.ennote{margin:6px 0 0;font-size:13px;color:#a9a3c6;text-align:center}
 `;
 
 const SKIES = {
@@ -355,7 +376,10 @@ const ICON = {
   plus: '<path d="M12 5v14"></path><path d="M5 12h14"></path>',
   minus: '<path d="M5 12h14"></path>',
   bulb: '<path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"></path><path d="M9 18h6"></path><path d="M10 21h4"></path>',
-  heat: '<path d="M12 3c2 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3-1-5 1-8z"></path>'
+  heat: '<path d="M12 3c2 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3-1-5 1-8z"></path>',
+  sun: '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.9 4.9l1.4 1.4"></path><path d="M17.7 17.7l1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.9 19.1l1.4-1.4"></path><path d="M17.7 6.3l1.4-1.4"></path>',
+  battery: '<rect x="3" y="7" width="16" height="10" rx="2"></rect><path d="M22 11v2"></path>',
+  pylon: '<path d="M12 2L7 22"></path><path d="M12 2l5 20"></path><path d="M5 8h14"></path><path d="M7 13h10"></path><path d="M9.5 8l5 5"></path><path d="M14.5 8l-5 5"></path>'
 };
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -395,7 +419,7 @@ class LumenCard extends HTMLElement {
   }
 
   static getStubConfig() { return {}; }
-  setConfig(config) { this._config = Object.assign({}, config || {}); this._sig = ''; this._render(); }
+  setConfig(config) { this._config = Object.assign({}, config || {}); this._sig = ''; this._en = null; this._render(); }
   getCardSize() { return 12; }
   getGridOptions() { return { columns: 'full', rows: 12 }; }
 
@@ -406,6 +430,7 @@ class LumenCard extends HTMLElement {
     const regs = [hass.entities, hass.devices, hass.areas, hass.floors];
     const regsChanged = !this._regs || regs.some((r, i) => r !== this._regs[i]);
     this._regs = regs;
+    if (regsChanged) this._en = null;
     const sig = this._signature();
     if (regsChanged || sig !== this._sig) { this._sig = sig; this._render(); }
   }
@@ -572,7 +597,7 @@ class LumenCard extends HTMLElement {
     if (Date.now() - this._lastTouch < mins * 60000) return;
     const home = this._homeView();
     const v = this._view;
-    const same = !v.help && (v.floor || null) === home.floor && (v.room || null) === home.room && (v.entity || null) === null && !(v.kinds || []).length;
+    const same = !v.help && (v.floor || null) === home.floor && (v.room || null) === home.room && (v.entity || null) === null && !(v.kinds || []).length && !v.energy;
     if (same) return;
     this._view = home;
     this._sig = '';
@@ -720,7 +745,149 @@ class LumenCard extends HTMLElement {
         parts.push(id + s.state + (dom === 'climate' ? s.attributes.temperature + '/' + s.attributes.current_temperature + '/' + s.attributes.hvac_action : '') + (dom === 'light' ? s.attributes.brightness + '/' + s.attributes.color_temp_kelvin + '/' + s.attributes.hs_color + '/' + s.attributes.color_mode : ''));
       }
     });
+    const en = this._energy();
+    if (en) parts.push('E' + this._energyNow(en).key);
     return parts.join('|');
+  }
+
+  /* ---------- energy: sun, battery, house and grid ---------- */
+
+  // find the solar, battery, grid and house power sensors, whatever the brand
+  // (or use the ones named in the card's energy: option)
+  _energy() {
+    const h = this._hass;
+    if (!h || !this._config || this._config.energy === false) return null;
+    if (this._en !== undefined && this._en !== null) return this._en || null;
+    const cfg = typeof this._config.energy === 'object' && this._config.energy ? this._config.energy : {};
+    const reg = h.entities || {};
+    const txt = (id) => (id + ' ' + String((h.states[id].attributes || {}).friendly_name || '')).toLowerCase().replace(/[_.]/g, ' ');
+    const power = [], socs = [];
+    Object.keys(h.states).forEach((id) => {
+      if (!id.startsWith('sensor.')) return;
+      const r = reg[id];
+      if (r && (r.hidden || r.entity_category)) return;
+      const a = h.states[id].attributes || {};
+      const u = String(a.unit_of_measurement || '');
+      if (a.device_class === 'power' || ['W', 'kW', 'MW'].includes(u)) power.push(id);
+      else if (a.device_class === 'battery' && u === '%') socs.push(id);
+    });
+    const SKIP = /(daily|today|month|year|max|min|limit|rated|available|reactive|apparent|phase|string|mppt|pv ?\d|forecast|estimat|peak|average|filtered|third party|setpoint|target)/;
+    const pick = (test) => {
+      const c = power.filter((id) => { const t = txt(id); return test(t) && !SKIP.test(t); });
+      const score = (id) => { const t = txt(id); return (/(plant|system|total|site|house|home)/.test(t) ? 2 : 0) - (/(inverter|charger|module|unit \d)/.test(t) ? 1 : 0); };
+      c.sort((a, b) => score(b) - score(a) || a.length - b.length);
+      return c[0] || null;
+    };
+    const has = (k) => Object.prototype.hasOwnProperty.call(cfg, k);
+    const solar = has('solar') ? cfg.solar : pick((t) => /(pv|solar|photovoltaic)/.test(t) && !/(battery|grid|export|import|consum|load)/.test(t));
+    const battery = has('battery_power') ? cfg.battery_power : pick((t) => /(battery|\bess\b)/.test(t) && !/(soc|state of charge|charging|discharging|pv|solar|grid)/.test(t));
+    const gridIn = has('grid_import') ? cfg.grid_import : pick((t) => /grid/.test(t) && /import/.test(t) && !/export/.test(t));
+    const gridOut = has('grid_export') ? cfg.grid_export : pick((t) => /grid/.test(t) && /export/.test(t) && !/import/.test(t));
+    const grid = has('grid') ? cfg.grid : pick((t) => /grid/.test(t) && !/(import|export|battery|pv|solar)/.test(t));
+    const home = has('home') ? cfg.home : pick((t) => /(consum|load|house|home)/.test(t) && !/(pv|solar|battery|\bess\b|grid)/.test(t));
+    let soc = has('battery') ? cfg.battery : null;
+    if (!has('battery')) {
+      const dv = battery && reg[battery] && reg[battery].device_id;
+      const same = dv ? socs.filter((id) => reg[id] && reg[id].device_id === dv) : [];
+      const named = socs.filter((id) => /(state of charge|soc)/.test(txt(id)) && (!solar || !reg[solar] || !reg[id] || !reg[solar].config_entry_id || reg[id].config_entry_id === reg[solar].config_entry_id));
+      soc = same[0] || named[0] || null;
+    }
+    const ok = (id) => (id && h.states[id] ? id : null);
+    const en = { solar: ok(solar), battery: ok(battery), soc: ok(soc), grid: ok(grid), gridIn: ok(gridIn), gridOut: ok(gridOut), home: ok(home),
+      // which way is "plus"? battery: plus = charging (most brands); grid: plus = buying from the grid
+      battInvert: !!cfg.battery_invert, gridInvert: !!cfg.grid_invert };
+    this._en = en.solar || en.battery || en.soc ? en : false;
+    return this._en || null;
+  }
+
+  // the live numbers, in kW
+  _energyNow(en) {
+    const h = this._hass;
+    const kw = (id) => {
+      if (!id || !h.states[id]) return null;
+      const v = num(h.states[id].state);
+      if (v == null) return null;
+      const u = String(h.states[id].attributes.unit_of_measurement || '');
+      return u === 'W' ? v / 1000 : u === 'MW' ? v * 1000 : v;
+    };
+    const solar = en.solar ? Math.max(0, kw(en.solar) || 0) : null;
+    let batt = kw(en.battery);
+    if (batt != null && en.battInvert) batt = -batt;
+    let grid = kw(en.grid);
+    if (grid != null && en.gridInvert) grid = -grid;
+    if (grid == null && (en.gridIn || en.gridOut)) grid = (kw(en.gridIn) || 0) - (kw(en.gridOut) || 0);
+    let home = kw(en.home);
+    if (home == null) home = Math.max(0, (solar || 0) - (batt || 0) + (grid || 0));
+    const soc = en.soc ? num(h.states[en.soc].state) : null;
+    const r1 = (v) => (v == null ? '' : Math.round(v * 10) / 10);
+    return { solar, batt, grid, home, soc, key: [r1(solar), r1(batt), r1(grid), r1(home), soc == null ? '' : Math.round(soc)].join('/') };
+  }
+
+  _energyPill(mode) {
+    const en = this._energy();
+    // phones are too narrow for it: they use the Energy button on the rail
+    if (!en || mode !== 'full') return '';
+    const n = this._energyNow(en);
+    const kwTxt = (v) => (Math.abs(v) < 10 ? (Math.round(v * 10) / 10).toFixed(1) : Math.round(v)) + ' kW';
+    const bits = [];
+    if (n.solar != null) bits.push(kwTxt(n.solar));
+    if (n.soc != null) bits.push(Math.round(n.soc) + '%');
+    if (!bits.length) return '';
+    const said = (n.solar != null ? 'Sun making ' + kwTxt(n.solar) : '') + (n.soc != null ? (n.solar != null ? ', ' : '') + 'battery ' + Math.round(n.soc) + '%' : '');
+    return `<button class="enpill" data-act="energy" aria-label="${esc(said)}. Open the energy view">${svg(n.solar != null ? 'sun' : 'battery')}<span>${esc(bits.join(' · '))}</span></button>`;
+  }
+
+  _energyHtml() {
+    const en = this._energy();
+    const n = this._energyNow(en);
+    const IDLE = 0.03;
+    const kwTxt = (v) => (Math.abs(v) < 10 ? (Math.round(Math.abs(v) * 10) / 10).toFixed(1) : Math.round(Math.abs(v))) + ' kW';
+    const dur = (v) => Math.max(0.5, Math.min(3, 2.6 - Math.abs(v) * 0.35)).toFixed(2) + 's';
+    const HUB = [300, 215];
+    const nodes = [];
+    const lines = [];
+    // a line from a node to the hub; dir = 1 flows into the hub, -1 flows out to the node
+    const line = (x, y, colour, v, dir) => {
+      const into = dir > 0;
+      const d = into ? `M${x} ${y} L${HUB[0]} ${HUB[1]}` : `M${HUB[0]} ${HUB[1]} L${x} ${y}`;
+      const idle = v == null || Math.abs(v) < IDLE;
+      lines.push(`<path class="ebase" d="M${x} ${y} L${HUB[0]} ${HUB[1]}"></path><path class="eline ${idle ? 'idle' : ''}" d="${d}" style="stroke:${colour};animation-duration:${dur(v || 0)}"></path>`);
+    };
+    // phones shrink the drawing, so give them bigger words
+    const f = this._modeNow === 'phone' ? 1.4 : 1;
+    const node = (x, y, colour, icon, label, value, sub, below) => {
+      const ty = below ? y + 48 + 22 * f : y - 50 - 54 * f - (sub ? 24 * f : 0) + 24 * f;
+      nodes.push(`<g><circle class="enode" cx="${x}" cy="${y}" r="44" style="stroke:${colour}"></circle>
+        <svg x="${x - 22}" y="${y - 22}" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="${colour}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[icon]}</svg>
+        <text x="${x}" y="${ty}" text-anchor="middle"><tspan class="elbl" x="${x}" style="font-size:${22 * f}px">${esc(label)}</tspan><tspan class="eval" x="${x}" dy="${30 * f}" style="font-size:${26 * f}px">${esc(value)}</tspan>${sub ? `<tspan class="esub" x="${x}" dy="${24 * f}" style="font-size:${18 * f}px">${esc(sub)}</tspan>` : ''}</text></g>`);
+    };
+    const SUN = '#ffd29a', BAT = '#8fe3b0', GRID = '#9cc4ff', HOME = '#f4f1ff';
+    if (n.solar != null) {
+      line(300, 95, SUN, n.solar, 1);
+      node(300, 95, SUN, 'sun', 'Sun', kwTxt(n.solar), n.solar < IDLE ? 'resting' : 'making', false);
+    }
+    if (n.batt != null || n.soc != null) {
+      const b = n.batt || 0;
+      const what = Math.abs(b) < IDLE ? 'resting' : b > 0 ? 'charging ' + kwTxt(b) : 'giving ' + kwTxt(b);
+      line(300, 355, BAT, b, b < 0 ? 1 : -1);
+      node(300, 355, BAT, 'battery', 'Battery', n.soc != null ? Math.round(n.soc) + '%' : kwTxt(b), n.soc != null ? what : (Math.abs(b) < IDLE ? 'resting' : b > 0 ? 'charging' : 'giving'), true);
+    }
+    if (n.grid != null) {
+      const g = n.grid;
+      line(95, 215, GRID, g, g > 0 ? 1 : -1);
+      node(95, 215, GRID, 'pylon', 'Grid', Math.abs(g) < IDLE ? '0 kW' : kwTxt(g), Math.abs(g) < IDLE ? 'resting' : g > 0 ? 'buying' : 'selling', true);
+    }
+    line(505, 215, HOME, n.home, -1);
+    node(505, 215, HOME, 'house', 'House', kwTxt(n.home || 0), 'using', true);
+    const head = n.solar != null ? (n.solar < IDLE ? 'The sun is resting' : 'The sun is making ' + kwTxt(n.solar)) : 'Your battery';
+    const missing = !en.grid && !en.gridIn && !en.gridOut;
+    return `<div class="card">
+      <div class="cardhead"><h1>Energy</h1><span>${esc(head)}</span></div>
+      <div class="enwrap"><svg class="flow" viewBox="${f > 1 ? '-10 -60 620 600' : '0 -50 600 560'}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${esc(head)}">
+        ${lines.join('')}<circle cx="${HUB[0]}" cy="${HUB[1]}" r="9" fill="#f4f1ff" opacity="0.85"></circle>${nodes.join('')}
+      </svg></div>
+      ${missing ? '<p class="ennote">No grid sensor found, so the grid is left out. You can name one in the card\u2019s <b>energy:</b> option.</p>' : ''}
+    </div>`;
   }
 
   _weather() {
@@ -849,6 +1016,8 @@ class LumenCard extends HTMLElement {
     let body;
     if (!floors.length) {
       body = `<div class="card"><div class="cardhead"><h1>Welcome to Lumen</h1></div><p class="empty">No rooms yet. Add floors and areas in Settings → Areas, labels &amp; zones, and give your devices an area. Lumen will draw them here.</p></div>`;
+    } else if (v.energy && this._energy()) {
+      body = this._energyHtml();
     } else if ((v.kinds || []).length) {
       body = this._tableHtml(floors, floor);
     } else if (floor) {
@@ -895,7 +1064,7 @@ class LumenCard extends HTMLElement {
       : `
         <div class="top">
           <div class="brand glass"><b>Lumen</b><span>${esc(time)} · ${esc(sky.name)}${mode === 'phone' ? '' : ' · ' + esc(mood.season)}</span></div>
-          <div class="topr">${wxHtml}${this._config.settings === false ? '' : `<button class="setbtn" data-act="settings" aria-label="Settings and help">${svg('gear')}</button>`}</div>
+          <div class="topr">${v.energy ? '' : this._energyPill(mode)}${wxHtml}${this._config.settings === false ? '' : `<button class="setbtn" data-act="settings" aria-label="Settings and help">${svg('gear')}</button>`}</div>
         </div>
         ${rail}
         <div class="stagewrap ${rail ? '' : 'norail'}">${body}</div>
@@ -966,9 +1135,11 @@ class LumenCard extends HTMLElement {
     }[k]);
     const btns = KINDS.filter(([k]) => present[k]).map(([k, label]) => `<button class="kbtn ${sel.includes(k) ? 'active' : ''}" data-act="kind" data-id="${k}" aria-pressed="${sel.includes(k)}" aria-label="Show all ${label.toLowerCase()}${counts[k] ? ', ' + counts[k] + ' on' : ''}">
         <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;height:28px">${icon(k)}</span><span class="klbl">${label}</span>${counts[k] ? `<span class="kcount" aria-hidden="true">${counts[k]}</span>` : ''}</button>`).join('');
-    if (!btns) return '';
-    const clear = (sel.length || this._view.floor) ? `<span class="raildiv" aria-hidden="true"></span><button class="kbtn" data-act="clear" aria-label="Clear and go back to the whole house"><span aria-hidden="true" style="display:flex;height:28px;align-items:center">${svg('close', 'width="20" height="20"')}</span><span class="klbl">Clear</span></button>` : '';
-    return `<nav class="rail glass" aria-label="Device types">${btns}${clear}</nav>`;
+    const en = this._energy();
+    const enBtn = en ? `<button class="kbtn ${this._view.energy ? 'active' : ''}" data-act="energy" aria-pressed="${!!this._view.energy}" aria-label="Energy: sun, battery, house and grid"><span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;height:28px"><span class="ensun">${svg(en.solar ? 'sun' : 'battery')}</span></span><span class="klbl">Energy</span></button>${btns ? '<span class="raildiv" aria-hidden="true"></span>' : ''}` : '';
+    if (!btns && !enBtn) return '';
+    const clear = (sel.length || this._view.floor || this._view.energy) ? `<span class="raildiv" aria-hidden="true"></span><button class="kbtn" data-act="clear" aria-label="Clear and go back to the whole house"><span aria-hidden="true" style="display:flex;height:28px;align-items:center">${svg('close', 'width="20" height="20"')}</span><span class="klbl">Clear</span></button>` : '';
+    return `<nav class="rail glass" aria-label="Device types">${enBtn}${btns}${clear}</nav>`;
   }
 
   _tableHtml(floors, floor) {
@@ -1521,6 +1692,10 @@ class LumenCard extends HTMLElement {
         <li>The buttons ${mode === 'phone' ? 'along the top' : 'on the left'} (Lights, Heat and so on) list every device of that type, floor by floor.</li>
         <li>The number on a button shows how many are on right now.</li>
         <li>Tap more than one to see them together. <b>All off</b> switches off everything in the list.</li></ul></div>`;
+    const energy = mode !== 'small' && this._energy() ? `<div class="hsec"><h3>Energy</h3><ul>
+        <li>Tap <b>Energy</b> on the device buttons, or the little sun at the top, to see your solar, battery, house and grid.</li>
+        <li>The moving dots show which way the power is going right now. Faster dots mean more power.</li>
+        <li>Lumen finds these sensors by itself. If it picks the wrong one, name the right ones in the card's <b>energy:</b> option (see the README).</li></ul></div>` : '';
     const star = mode === 'phone' ? '' : `<div class="hsec"><h3>This screen's room</h3><ul>
         <li>Open a room and tap the <b>star</b>. This screen now opens on that room.</li>
         <li>${this._returnMins() ? `If nobody touches the screen for ${esc(this._returnMins())} minutes, it goes back to that room by itself.` : 'You can make the screen go back to that room by itself in Settings.'}</li>
@@ -1536,7 +1711,7 @@ class LumenCard extends HTMLElement {
       </div>
       <div class="hsec hnow"><p>This screen is using the <b>${names[mode]}</b> layout. Lumen picks the layout by itself from the screen size, so some things only appear on bigger screens.</p></div>
       <div class="hsec"><h3>Getting around</h3>${getAround}</div>
-      ${rail}${star}${draw}
+      ${rail}${energy}${star}${draw}
       <div class="hsec"><h3>What works where</h3><table>
         <thead><tr><th></th>${head}</tr></thead>
         <tbody>
@@ -1544,6 +1719,7 @@ class LumenCard extends HTMLElement {
           ${row('Heating, light and camera controls', 1, 1, 1)}
           ${row('Whole house at a glance', 1, 1, 0)}
           ${row('Device buttons and lists', 1, 1, 0)}
+          ${row('Energy view (solar and battery)', 1, 1, 0)}
           ${row('This screen’s room (star)', 1, 0, 1)}
           ${row('Drawing rooms', 1, 0, 0)}
         </tbody></table></div>
@@ -1766,7 +1942,8 @@ class LumenCard extends HTMLElement {
     if (act === 'close-bg' && this._view.help) { if (ev.target !== t) return; this._view.help = false; }
     else if (act === 'close-bg') { if (ev.target !== t) return; if (this._modeNow !== 'small') this._view.room = null; this._view.entity = null; }
     else if (act === 'floor') { this._view = { floor: id || null, room: null, entity: null, kinds: this._view.kinds || [] }; this._edit = null; }
-    else if (act === 'kind') { const k = this._view.kinds || []; this._view.kinds = k.includes(id) ? k.filter((x) => x !== id) : k.concat(id); this._view.room = null; this._edit = null; }
+    else if (act === 'energy') { this._view = { floor: null, room: null, entity: null, kinds: [], energy: !this._view.energy }; this._edit = null; }
+    else if (act === 'kind') { this._view.energy = false; const k = this._view.kinds || []; this._view.kinds = k.includes(id) ? k.filter((x) => x !== id) : k.concat(id); this._view.room = null; this._edit = null; }
     else if (act === 'kinds-done') { this._view.kinds = []; }
     else if (act === 'clear') { this._view = { floor: null, room: null, entity: null, kinds: [] }; this._edit = null; }
     else if (act === 'open-entity') { this._view.room = t.dataset.room; this._view.entity = id; }

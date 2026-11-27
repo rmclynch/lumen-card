@@ -20,6 +20,7 @@ Lumen shows your whole house as glowing floors stacked on top of each other. Roo
 - **Fits any screen.** Lumen measures itself and picks a layout: the full stacked house on big screens, the same stacked house on phones, with the device buttons along the top and the floor buttons along the bottom, and big simple buttons on small square wall screens (about 4 inches).
 - **Settings and help.** A small gear at the top right opens settings for that screen (sky effects, layout, this screen's room, how long before it goes back) and a short **How to use Lumen** guide. It says which layout the screen is on and which features only appear on bigger screens.
 - **Wall screens.** Add `?kiosk` to the dashboard address to hide Home Assistant's menus.
+- **Energy.** If you have solar panels or a home battery, an **Energy** button appears. It shows the sun, battery, house and grid, with moving dots showing which way the power is flowing right now. A small sun at the top of big screens shows how much the panels are making.
 
 | Floor plan | Drawing rooms | Lights list |
 |---|---|---|
@@ -28,6 +29,10 @@ Lumen shows your whole house as glowing floors stacked on top of each other. Roo
 | Phone | Small wall screen | Camera |
 |---|---|---|
 | ![](docs/images/phone.png) | ![](docs/images/small.png) | ![](docs/images/camera.png) |
+
+| Energy |
+|---|
+| ![](docs/images/energy.png) |
 
 ## Before you start
 
@@ -90,6 +95,24 @@ mode: auto          # auto, full, phone or small: force a layout instead of choo
 room: kitchen       # optional: the room a screen opens on if nobody has starred one
 return_after: 5     # minutes without a touch before going back to the starred room (0 = never)
 ```
+
+### Energy (solar and battery)
+
+Lumen finds your solar, battery, grid and house power sensors by itself (it was built around the Sigenergy Local Modbus integration, and looks for the usual names from other brands). If it picks the wrong one, or misses one, name them yourself. Every line is optional:
+
+```yaml
+energy:
+  solar: sensor.sigen_plant_pv_power                  # power from the panels
+  battery: sensor.sigen_plant_battery_state_of_charge # battery %
+  battery_power: sensor.sigen_plant_battery_power     # plus = charging
+  grid: sensor.sigen_plant_grid_active_power          # plus = buying from the grid
+  home: sensor.sigen_plant_consumed_power             # what the house is using
+  # grid_import / grid_export: use these instead of grid if you have two separate sensors
+  # battery_invert: true   # if your battery shows plus when it is giving power
+  # grid_invert: true      # if your grid shows plus when you are selling
+```
+
+Use `energy: false` to hide the energy view. If there's no house sensor, Lumen works it out from the others.
 
 Room drawings are saved into the card as `layout:` by the **Edit layout** button. You don't need to type them.
 
